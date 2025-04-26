@@ -1,0 +1,14 @@
+package GlobalSetup
+{
+   import mx.core.BitmapAsset;
+   
+   [Embed(source="/_assets/791_GlobalSetup.Embeds_droid005_png.png")]
+   public class Embeds_droid005_png extends BitmapAsset
+   {
+      public function Embeds_droid005_png()
+      {
+         super();
+      }
+   }
+}
+

@@ -1,0 +1,14 @@
+package GlobalSetup
+{
+   import mx.core.BitmapAsset;
+   
+   [Embed(source="/_assets/117_GlobalSetup.Embeds_wep_L_png.png")]
+   public class Embeds_wep_L_png extends BitmapAsset
+   {
+      public function Embeds_wep_L_png()
+      {
+         super();
+      }
+   }
+}
+

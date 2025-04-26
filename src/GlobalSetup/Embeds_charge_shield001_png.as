@@ -1,0 +1,14 @@
+package GlobalSetup
+{
+   import mx.core.BitmapAsset;
+   
+   [Embed(source="/_assets/551.png")]
+   public class Embeds_charge_shield001_png extends BitmapAsset
+   {
+      public function Embeds_charge_shield001_png()
+      {
+         super();
+      }
+   }
+}
+
