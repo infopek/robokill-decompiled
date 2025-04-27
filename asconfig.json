@@ -9,7 +9,7 @@
 		],
 		"output": "bin/robokill.swf",
 		"default-background-color": "#ffffff",
-		"default-frame-rate": 60,
+		"default-frame-rate": 80,
 		"default-size": {
 			"width": 800,
 			"height": 800
