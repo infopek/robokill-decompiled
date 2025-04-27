@@ -200,7 +200,7 @@ package GameObjects
       
       public var children:Array;
       
-      public function GameObject(param1:GameScene, param2:Object, param3:String, param4:int, param5:int)
+      public function GameObject(gameScene:GameScene, param2:Object, param3:String, param4:int, param5:int)
       {
          var _loc6_:Class = null;
          collisions = new Array();
@@ -211,9 +211,9 @@ package GameObjects
          randTicks = Random.randInt(0,10000);
          fontName = GameConfig.fontName;
          super();
-         if(param1 == null)
+         if(gameScene == null)
          {
-            param1 = GameScene.current();
+            gameScene = GameScene.current();
          }
          helper = new GameObjectHelper(this);
          helperFilter = new GameObjectHelperFilter(this);
@@ -245,9 +245,9 @@ package GameObjects
          obj.y = basey;
          lastX = basex;
          lastY = basey;
-         param1.objects.push(this);
+         gameScene.objects.push(this);
          zOrderString = param3;
-         m = param1.clipForZOrder(param3);
+         m = gameScene.clipForZOrder(param3);
          m.addChild(obj);
          mainLayer = new ParticleLayer();
          mainLayer.parent = m;
@@ -255,7 +255,7 @@ package GameObjects
          {
             imClass = Class(param2);
          }
-         gs = param1;
+         gs = gameScene;
       }
       
       public function setupButton(param1:Object, param2:String, param3:Class = null, param4:Boolean = false, param5:Boolean = false) : void

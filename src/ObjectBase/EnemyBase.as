@@ -27,6 +27,7 @@ package ObjectBase
    import Tools.Interpolation;
    import Tools.PathfindSquare;
    import Tools.Random;
+   import Tools.Debug;
    import flash.display.BitmapData;
    import flash.geom.Point;
    
@@ -534,40 +535,32 @@ package ObjectBase
          return _experience() * levelMult[MainScene(gs).currentEpisode] * toughnessMult[toughness] * 1.2;
       }
       
-      public function spawn(param1:Class, param2:int, param3:int, param4:int) : GameObject
+      public function spawn(enemyType:Class, x:int, y:int, toughness:int) : GameObject
       {
-         var _loc6_:GameObject = null;
-         var _loc7_:EnemyBase = null;
-         if(isTeleporting())
-         {
+         var go:GameObject = null;
+         var enemy:EnemyBase = null;
+
+         if(isTeleporting()
+          || falling 
+          || MainScene(gs).player._removed 
+          || MainScene(gs).fading
+         ) {
             return null;
          }
-         if(falling)
+         toughness = Interpolation.lockValueInt(toughness,0,3);
+         var remainingEnemyCount:int = 15;
+         for each(go in gs.objects)
          {
-            return null;
-         }
-         if(MainScene(gs).player._removed)
-         {
-            return null;
-         }
-         if(MainScene(gs).fading)
-         {
-            return null;
-         }
-         param4 = Interpolation.lockValueInt(param4,0,3);
-         var _loc5_:int = 15;
-         for each(_loc6_ in gs.objects)
-         {
-            if(_loc6_ is param1)
+            if(go is enemyType)
             {
-               _loc5_--;
+               remainingEnemyCount--;
             }
          }
-         if(_loc5_ > 0)
+         if(remainingEnemyCount > 0)
          {
-            _loc7_ = new param1(gs,basex,basey);
-            _loc7_.setupDifficulty(param4);
-            return _loc7_;
+            enemy = new enemyType(gs,basex,basey);
+            enemy.setupDifficulty(toughness);
+            return enemy;
          }
          return null;
       }

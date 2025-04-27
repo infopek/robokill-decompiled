@@ -10,6 +10,7 @@ package GameLevels
    import Templates.RewardText;
    import Tools.GraphicsTools;
    import Tools.Interpolation;
+   import Tools.Debug;
    import flash.display.*;
    import flash.filters.*;
    import flash.geom.ColorTransform;
@@ -377,8 +378,6 @@ package GameLevels
       public function getFloor(param1:Boolean) : BitmapData
       {
          var _loc2_:PlayerBase = null;
-         var _loc8_:int = 0;
-         var _loc9_:int = 0;
          var _loc10_:GameObject = null;
          var _loc11_:Bitmap = null;
          var _loc12_:Bitmap = null;
@@ -390,51 +389,45 @@ package GameLevels
          var _loc20_:Bitmap = null;
          tileCount = 0;
          _loc2_ = MainScene(gs).player;
-         var _loc3_:Array = (_loc2_.lg.getCellData(_loc2_.gridx,_loc2_.gridy,"PredefinedLevel") as Array)[0];
-         var _loc4_:Array = _loc3_[0];
+         var cells:Array = _loc2_.lg.getCellData(_loc2_.gridx,_loc2_.gridy,"PredefinedLevel") as Array;
+         var _loc4_:Array = cells[0];
          var _loc5_:Array = _loc4_[0].init(_loc4_[1],gs);
-         var _loc6_:int = 1;
-         while(_loc6_ < _loc3_.length)
+
+         var i:int = 0;
+         var j:int = 0;
+
+         for (i = 1; i < cells.length; i++)
          {
             if(param1)
             {
-               if(isFloorLevel(_loc3_[_loc6_]))
+               if(isFloorLevel(cells[i]))
                {
-                  _loc19_ = MainScene(gs).initLevel(_loc3_[_loc6_]);
+                  _loc19_ = MainScene(gs).initLevel(cells[i]);
                   for each(_loc10_ in _loc19_)
                   {
                      _loc5_.push(_loc10_);
                   }
                }
             }
-            _loc6_++;
          }
          var _loc7_:Array = new Array();
          floorPos = new Array();
-         _loc8_ = 0;
-         while(_loc8_ < 32)
+         for (i = 0; i < 32; i++)
          {
-            floorPos[_loc8_] = new Array();
-            _loc7_[_loc8_] = new Array();
-            _loc9_ = 0;
-            while(_loc9_ < 32)
+            floorPos[i] = new Array();
+            _loc7_[i] = new Array();
+            for (j = 0; j < 32; j++)
             {
-               floorPos[_loc8_][_loc9_] = -1;
-               _loc9_++;
+               floorPos[i][j] = -1;
             }
-            _loc8_++;
          }
-         _loc9_ = 0;
-         while(_loc9_ < MainScene(gs).toPlayer.width)
+         for (i = 0; i < MainScene(gs).toPlayer.width; i++)
          {
-            _loc8_ = 0;
-            while(_loc8_ < MainScene(gs).toPlayer.height)
+            for (j = 0; j < MainScene(gs).toPlayer.height; j++)
             {
-               MainScene(gs).setPassable(_loc9_,_loc8_,false);
-               MainScene(gs).setExists(_loc9_,_loc8_,false);
-               _loc8_++;
+               MainScene(gs).setPassable(i,j,false);
+               MainScene(gs).setExists(i,j,false);
             }
-            _loc9_++;
          }
          for each(_loc10_ in gs.objects)
          {
@@ -494,40 +487,35 @@ package GameLevels
          {
             _loc15_ = new ColorTransform(1,1.2,1.6);
          }
-         _loc9_ = 0;
-         while(_loc9_ < 800 / 52)
+
+         for (i = 0; i < 800 / 52; i++)
          {
-            _loc8_ = 0;
-            while(_loc8_ < 800 / 52)
+            for (j = 0; j < 800 / 52; j++)
             {
-               if(floorPos[_loc8_][_loc9_] >= 0)
+               if(floorPos[j][i] >= 0)
                {
-                  _loc20_ = _loc7_[_loc8_][_loc9_];
-                  _loc20_.x = _loc9_ * 52 + 10;
-                  _loc20_.y = _loc8_ * 52 + 14;
+                  _loc20_ = _loc7_[j][i];
+                  _loc20_.x = i * 52 + 10;
+                  _loc20_.y = j * 52 + 14;
                   _loc11_.bitmapData.draw(_loc20_,_loc20_.transform.matrix);
                }
-               _loc8_++;
             }
-            _loc9_++;
          }
+
          _loc11_.bitmapData.draw(_loc12_,null,_loc15_,BlendMode.MULTIPLY);
          var _loc16_:Array = [0,1,2,3,4,1,0,3,4,2,5,5,5];
          var _loc17_:Bitmap = new Bitmap(Embeds.pit[_loc16_[MainScene(gs).currentEpisode]]);
-         _loc9_ = 0;
-         while(_loc9_ < 800 / 52)
+         for (i = 0; i < 800 / 52; i++)
          {
-            _loc8_ = 0;
-            while(_loc8_ < 800 / 52)
+            for (j = 0; j < 800 / 52; j++)
             {
-               if(floorPos[_loc8_][_loc9_] == -1)
+               if(floorPos[j][i] == -1)
                {
-                  _loc11_.bitmapData.draw(_loc17_,null,null,null,new Rectangle(_loc9_ * 52 + 10,_loc8_ * 52 + 14,52,52));
+                  _loc11_.bitmapData.draw(_loc17_,null,null,null,new Rectangle(i * 52 + 10,j * 52 + 14,52,52));
                }
-               _loc8_++;
             }
-            _loc9_++;
          }
+
          for each(_loc10_ in gs.objects)
          {
             if(_loc10_ is FloorDecalBase && !(_loc10_ is FreeFloorDecal) || decalZOrderChange(_loc10_))

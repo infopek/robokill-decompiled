@@ -30,68 +30,64 @@ package LevelGridTools
       
       public function _init(missionNum:int = 0) : void
       {
-         var _loc5_:Array = null;
-         var _loc6_:int = 0;
-         var _loc7_:Array = null;
-         var _loc8_:Array = null;
-         var _loc9_:int = 0;
-         var _loc2_:int = mainGameLevels.maxX(missionNum) - mainGameLevels.minX(missionNum) + 1;
-         var _loc3_:int = mainGameLevels.maxY(missionNum) - mainGameLevels.minY(missionNum) + 1;
-         var _loc4_:int = 0;
-         while(_loc4_ < _loc3_)
+         var predefinedCountsRow:Array = null;
+         var tileIndex:int = 0;
+         var tileData:Array = null;
+         var filteredTileData:Array = null;
+         var filteredTileIndex:int = 0;
+
+         var levelWidth:int = mainGameLevels.maxX(missionNum) - mainGameLevels.minX(missionNum) + 1;
+         var levelHeight:int = mainGameLevels.maxY(missionNum) - mainGameLevels.minY(missionNum) + 1;
+
+         for (var gridY:int = 0; gridY < levelHeight; gridY++)
          {
-            _loc5_ = new Array(_loc2_);
-            _loc6_ = 0;
-            while(_loc6_ < _loc2_)
+            predefinedCountsRow = new Array(levelWidth);
+
+            for (var gridX:int = 0; gridX < levelWidth; gridX++)
             {
-               _loc7_ = mainGameLevels.init(missionNum,_loc6_ + mainGameLevels.minX(missionNum),_loc4_ + mainGameLevels.minY(missionNum));
-               _loc8_ = new Array();
-               _loc9_ = 0;
-               while(_loc9_ < _loc7_.length)
+               tileData = mainGameLevels.init(missionNum, gridX + mainGameLevels.minX(missionNum), gridY + mainGameLevels.minY(missionNum));
+               filteredTileData = new Array();
+
+               for (tileIndex = 0; tileIndex < tileData.length; tileIndex++)
                {
-                  if(_loc7_[_loc9_][0] is propertiesSet)
-                  {
-                     if(_loc7_[_loc9_][1] == 0)
+                     if (tileData[tileIndex][0] is propertiesSet)
                      {
-                        setCellData(_loc6_,_loc4_,"Start",true);
+                        switch (tileData[tileIndex][1])
+                        {
+                           case 0:
+                                 setCellData(gridX, gridY, "Start", true);
+                                 break;
+                           case 1:
+                                 setCellData(gridX, gridY, "Key0", true);
+                                 break;
+                           case 2:
+                                 setCellData(gridX, gridY, "HasKey0", true);
+                                 break;
+                           case 3:
+                                 setCellData(gridX, gridY, "Finish", true);
+                                 break;
+                           case 4:
+                                 setCellData(gridX, gridY, "PartialFinish", true);
+                                 break;
+                           case 6:
+                                 setCellData(gridX, gridY, "Ambush", true);
+                                 break;
+                           case 7:
+                                 setCellData(gridX, gridY, "WeaponTreasure", true);
+                                 break;
+                        }
                      }
-                     else if(_loc7_[_loc9_][1] == 1)
+                     else
                      {
-                        setCellData(_loc6_,_loc4_,"Key0",true);
+                        filteredTileData.push(tileData[tileIndex]);
                      }
-                     else if(_loc7_[_loc9_][1] == 2)
-                     {
-                        setCellData(_loc6_,_loc4_,"HasKey0",true);
-                     }
-                     else if(_loc7_[_loc9_][1] == 3)
-                     {
-                        setCellData(_loc6_,_loc4_,"Finish",true);
-                     }
-                     else if(_loc7_[_loc9_][1] == 4)
-                     {
-                        setCellData(_loc6_,_loc4_,"PartialFinish",true);
-                     }
-                     else if(_loc7_[_loc9_][1] == 6)
-                     {
-                        setCellData(_loc6_,_loc4_,"Ambush",true);
-                     }
-                     else if(_loc7_[_loc9_][1] == 7)
-                     {
-                        setCellData(_loc6_,_loc4_,"WeaponTreasure",true);
-                     }
-                  }
-                  else
-                  {
-                     _loc8_.push(_loc7_[_loc9_]);
-                  }
-                  _loc9_++;
                }
-               _loc5_[_loc6_] = _loc8_.length;
-               setCellData(_loc6_,_loc4_,"PredefinedLevel",_loc8_);
-               _loc6_++;
+
+               predefinedCountsRow[gridX] = filteredTileData.length;
+               setCellData(gridX, gridY, "PredefinedLevel", filteredTileData);
             }
-            pushArr(_loc4_,_loc5_);
-            _loc4_++;
+
+            pushArr(gridY, predefinedCountsRow);
          }
       }
       

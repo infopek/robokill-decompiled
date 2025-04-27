@@ -135,16 +135,19 @@ package Scenes
          return _loc3_;
       }
       
-      public function applyToFloor(param1:Array) : *
+      public function applyToFloor(floorDamages:Array) : *
       {
-         var _loc3_:Array = null;
-         floorMarks = param1[0];
-         var _loc2_:int = 0;
-         while(_loc2_ < floorMarks.length)
+         floorMarks = floorDamages;
+
+         var floorDamage:Array = null;
+         var i:int = 0;
+         for (i = 0; i < floorDamages.length; i++)
          {
-            _loc3_ = floorMarks[_loc2_];
-            floor.drawToImage(_loc3_[0],_loc3_[1],_loc3_[2],_loc3_[3],_loc3_[4],_loc3_[5],BlendMode.NORMAL,new Rectangle(nofloorstartx,nofloorstarty,nofloorendx - nofloorstartx,nofloorendy - nofloorstarty),[_loc3_[6],_loc3_[7],_loc3_[8],1]);
-            _loc2_++;
+            floorDamage = floorDamages[i];
+            floor.drawToImage(floorDamage[0],floorDamage[1],floorDamage[2],floorDamage[3],floorDamage[4],floorDamage[5],
+               BlendMode.NORMAL,new Rectangle(nofloorstartx,nofloorstarty,nofloorendx - nofloorstartx,nofloorendy - nofloorstarty),
+               [floorDamage[6],floorDamage[7],floorDamage[8],1]
+            );
          }
       }
       
@@ -217,16 +220,16 @@ package Scenes
       
       public function countEnemies() : int
       {
-         var _loc2_:GameObject = null;
-         var _loc1_:int = 0;
-         for each(_loc2_ in objects)
+         var go:GameObject = null;
+         var count:int = 0;
+         for each(go in objects)
          {
-            if(_loc2_ is EnemyBase)
+            if(go is EnemyBase)
             {
-               _loc1_++;
+               count++;
             }
          }
-         return _loc1_;
+         return count;
       }
       
       public function assignDifficultyToOne(param1:Class, param2:int) : void
@@ -641,6 +644,10 @@ package Scenes
       
       public function doEnemyDifficulty() : void
       {
+         if (currentEpisode == 0) {
+            assignDifficultyToGroup(GruntBase,1);
+            assignDifficultyToGroup(Grunt,1);
+         }
          if(currentEpisode == 1)
          {
             assignDifficultyToOne(GruntBase,1);
@@ -837,18 +844,22 @@ package Scenes
          }
       }
       
-      public function assignDifficultyToGroup(param1:Class, param2:int, param3:int = -1) : void
+      public function assignDifficultyToGroup(
+         enemyType:Class, 
+         param2:int, 
+         param3:int = -1
+      ) : void
       {
          var _loc5_:EnemyBase = null;
          if(param2 == 2 && param3 != -1)
          {
-            assignDifficultyToGroup(param1,1);
+            assignDifficultyToGroup(enemyType,1);
          }
          if(param2 == 3 && param3 != -1)
          {
-            assignDifficultyToGroup(param1,2);
+            assignDifficultyToGroup(enemyType,2);
          }
-         var _loc4_:Array = getGroup(param1);
+         var _loc4_:Array = getGroup(enemyType);
          if(param3 != -1)
          {
             _loc4_ = Random.randArrayElements(_loc4_,param3);
@@ -864,9 +875,7 @@ package Scenes
          var go:GameObject = null;
          var ogo:GameObject = null;
          var levelArray:Array = param1;
-         Debug.log("initlevel1");
          var objs:Array = levelArray[0].init(levelArray[1],this);
-         Debug.log("initlevel2");
          for each(go in objs)
          {
             go.basex += 52 * 15 * (levelArray[2] - 0.5);
@@ -1307,6 +1316,7 @@ package Scenes
       {
          var _loc3_:GameObject = null;
          var _loc2_:Array = new Array();
+         var idx:Boolean = true;
          for each(_loc3_ in objects)
          {
             if(_loc3_ is GameObjectBase)
@@ -1508,11 +1518,12 @@ package Scenes
          {
             _loc3_ = player.lg.getCellData(player.gridx,player.gridy,"Data") as Array;
             _loc4_ = 0;
-            while(_loc4_ < _loc3_[0].length)
+            var len:int = _loc3_.length;
+            while(_loc4_ < _loc3_.length)
             {
-               _loc5_ = getDefinitionByName(_loc3_[0][_loc4_].typeName) as Class;
+               _loc5_ = getDefinitionByName(_loc3_[_loc4_].typeName) as Class;
                _loc1_ = GameObject(new _loc5_(this,0,0));
-               _loc3_[0][_loc4_].applyTo(_loc1_);
+               _loc3_[_loc4_].applyTo(_loc1_);
                if(_loc1_ is EnemyBase)
                {
                   EnemyBase(_loc1_).setupDifficulty(EnemyBase(_loc1_).toughness);
@@ -1808,35 +1819,35 @@ package Scenes
          return false;
       }
       
-      public function generateLevelBasedOnDistance(param1:int, param2:Boolean = false) : GameLevel
+      public function generateLevelBasedOnDistance(
+         param1:int, 
+         removeRegenerated:Boolean = false
+      ) : GameLevel
       {
-         var _loc7_:Array = null;
-         var _loc8_:GameObject = null;
-         var _loc3_:Array = player.lg.getCellData(player.gridx,player.gridy,"PredefinedLevel") as Array;
-         var _loc4_:Array = _loc3_[0];
-         Debug.log("loc4:" + _loc4_);
-         var _loc5_:int = 1;
-         while(_loc5_ < _loc4_.length)
+         var objectsOnCell:Array = null;
+         var go:GameObject = null;
+         var cellData:Array = player.lg.getCellData(
+            player.gridx,
+            player.gridy,
+            "PredefinedLevel") as Array;
+
+         for (var i:int = 0; i < cellData.length; i++)
          {
-            Debug.log("loc4[loc5]:" + _loc4_[_loc5_]);
-            _loc7_ = initLevel(_loc4_[_loc5_]);
-            for each(_loc8_ in _loc7_)
+            objectsOnCell = initLevel(cellData[i] as Array);
+            for each(go in objectsOnCell)
             {
-               if(_loc8_ is PickupBase || _loc8_ is TreasureChestBase)
+               if(go is PickupBase || go is TreasureChestBase)
                {
-                  if(param2)
+                  if(removeRegenerated)
                   {
-                     _loc8_.remove();
+                     go.remove();
                   }
                }
             }
-            _loc5_++;
          }
-         Debug.log("3" + _loc5_);
          doEnemyDifficulty();
          var _loc6_:GameLevel = new GameLevel();
          _loc6_.ambushRoom = player.lg.getCellData(player.gridx,player.gridy,"Ambush") == true;
-         Debug.log("4" + _loc5_);
          return _loc6_;
       }
    }

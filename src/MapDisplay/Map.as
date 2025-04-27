@@ -46,7 +46,6 @@ package MapDisplay
       
       public function pushGrid(param1:Bitmap, param2:int, param3:int) : void
       {
-         Debug.log("1");
          var _loc6_:GameObject = null;
          var _loc7_:Class = null;
          if(MainScene(gs).player.teleportHelp)
@@ -54,7 +53,6 @@ package MapDisplay
             doneHelp = true;
          }
          var _loc4_:PlayerBase = MainScene(gs).player;
-         Debug.log("2");
          mapObject.drawToPixmap(param1,param2 * 39,param3 * 29);
          var _loc5_:SpawnPoints = MainScene(gs).spawnPoints;
          if(_loc4_.lg.getCellData(param2,param3,"Finish") != null || _loc4_.lg.getCellData(param2,param3,"PartialFinish") != null)
@@ -111,12 +109,10 @@ package MapDisplay
             }
             addChild(_loc6_);
          }
-         Debug.log("3");
       }
       
       public function buildMap(param1:LevelGrid, param2:int, param3:int) : void
       {
-         Debug.log("buildMap calling...\n");
          var _loc7_:int = 0;
          var _loc8_:int = 0;
          var _loc4_:Bitmap = new Embeds.map_room1_png();

@@ -62,7 +62,7 @@ package ObjectBase
       
       override public function _update() : void
       {
-         var _loc2_:int = 0;
+         var overriddenToughness:int = 0;
          if(blockUpdating())
          {
             super._update();
@@ -82,17 +82,14 @@ package ObjectBase
          {
             if(created < 15)
             {
-               _loc2_ = toughness;
-               if(creationType == Jumper)
-               {
-                  _loc2_ = 0;
+               overriddenToughness = toughness;
+               if (creationType == Jumper) {
+                  overriddenToughness = 0;
                }
-               if(spawnDifficultyOverride >= 0)
-               {
-                  _loc2_ = spawnDifficultyOverride;
+               if (spawnDifficultyOverride >= 0) {
+                  overriddenToughness = spawnDifficultyOverride;
                }
-               if(spawn(creationType,basex,basey,_loc2_))
-               {
+               if (spawn(creationType,basex,basey,overriddenToughness)) {
                   ++created;
                   emitConditionalParticles("TeleportSmall");
                   Sounds.enemySpawn.play();

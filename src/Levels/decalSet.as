@@ -14,6 +14,7 @@ package Levels
    import Objects.Shuttle;
    import flash.display.Bitmap;
    
+   // Map cell type / layout, including boxes, obstacles 
    public class decalSet
    {
       public static var levels:int = 173;
