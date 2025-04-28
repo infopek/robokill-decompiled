@@ -644,10 +644,10 @@ package Scenes
       
       public function doEnemyDifficulty() : void
       {
-         if (currentEpisode == 0) {
-            assignDifficultyToGroup(GruntBase,1);
-            assignDifficultyToGroup(Grunt,1);
-         }
+         // if (currentEpisode == 0) {
+         //    assignDifficultyToGroup(GruntBase,0);
+         //    assignDifficultyToGroup(Grunt,0);
+         // }
          if(currentEpisode == 1)
          {
             assignDifficultyToOne(GruntBase,1);
