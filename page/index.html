@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Robokill</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 14px/1.4 system-ui, sans-serif;
+      color: #ddd;
+    }
+
+    #robokill-frame {
+      box-shadow: 0 0 20px rgba(0,0,0,.8);
+      border-radius: 4px;
+    }
+
+    #no-flash {
+      max-width: 220px;
+      text-align: center;
+      margin: 1em auto;
+    }
+  </style>
+</head>
+
+<body>
+  <object id="robokill-frame"
+          type="application/x-shockwave-flash"
+          data="../build/robokill.swf"
+          width="800"
+          height="600">
+      <param name="movie" value="build/robokill.swf">
+      <param name="quality" value="high">
+      <param name="allowScriptAccess" value="always">
+      <param name="wmode" value="direct">
+
+      <div id="no-flash">
+        <p><strong>Robokill</strong> is a Flash game.</p>
+        <p>If nothing appears, you’ll need a Flash-enabled browser or an emulator such as <a href="https://ruffle.rs/" target="_blank">Ruffle</a>.</p>
+      </div>
+  </object>
+</body>
+</html>
