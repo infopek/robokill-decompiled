@@ -24,7 +24,7 @@ set "FLASH_PROJECTOR_RELEASE=deps\flash-bin\flashplayer_32_sa.exe"
 set "FLASH_PROJECTOR_DEBUG=deps\flash-bin\flashplayer_32_sa_debug.exe"
 set "MAIN_CLASS=src\Main.as"
 set "TARGET_PLAYER=27.0"
-set "OUTPUT_DIR=..\build"
+set "OUTPUT_DIR=build"
 
 if /I "%MODE%"=="debug" (
     set "FLASH_PROJECTOR=%FLASH_PROJECTOR_DEBUG%"
