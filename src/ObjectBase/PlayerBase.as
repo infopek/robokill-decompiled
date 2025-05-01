@@ -1008,7 +1008,7 @@ package ObjectBase
       
       public function getDamageForLevel() : Number
       {
-         return 1 + 0.05 * level;
+         return 10 + 0.05 * level;
       }
       
       public function canMove(param1:int, param2:int) : Boolean

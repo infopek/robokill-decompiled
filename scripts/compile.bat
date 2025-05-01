@@ -22,6 +22,7 @@ set "FLEX_SDK=deps\apache-flex-sdk-4.16.1-bin"
 set "PLAYERGLOBAL_HOME=%PROJECT_ROOT%\deps\playerglobal"
 set "FLASH_PROJECTOR_RELEASE=deps\flash-bin\flashplayer_32_sa.exe"
 set "FLASH_PROJECTOR_DEBUG=deps\flash-bin\flashplayer_32_sa_debug.exe"
+set "RUFFLE_BINARY=deps\ruffle\ruffle.exe"
 set "MAIN_CLASS=src\Main.as"
 set "TARGET_PLAYER=27.0"
 set "OUTPUT_DIR=build"
@@ -34,7 +35,7 @@ if /I "%MODE%"=="debug" (
 ) else (
     set "FLASH_PROJECTOR=%FLASH_PROJECTOR_RELEASE%"
     set "DEBUG_FLAG="
-    set "OPT_FLAG=-optimize=true"
+    set "OPT_FLAG=-optimize=true -omit-trace-statements=true"
     set "OUT_SUFFIX="
 )
 
@@ -45,12 +46,11 @@ if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 echo [1/2] Compiling %MODE% SWF ... 
 CALL "%FLEX_SDK%\bin\mxmlc" ^
-    -source-path+=src ^
+    -source-path src ^
     -default-size 800 600 ^
-    -default-frame-rate 100 ^
+    -default-frame-rate 60 ^
     -static-link-runtime-shared-libraries=true ^
     -target-player=%TARGET_PLAYER% ^
-    -swf-version=27 ^
     %DEBUG_FLAG% %OPT_FLAG% ^
     -output "%OUTPUT_SWF%" ^
     "%MAIN_CLASS%"
@@ -61,7 +61,7 @@ if %ERRORLEVEL% GEQ 1 (
 )
 
 echo [2/2] Bundling projector EXE ...
-copy /B /Y "%FLASH_PROJECTOR%" + "%OUTPUT_SWF%" "%OUTPUT_EXE%" >nul
+copy /B /Y "%RUFFLE_BINARY%" + "%OUTPUT_SWF%" "%OUTPUT_EXE%"
 
 echo.
 echo Build (%MODE%) succeeded:
