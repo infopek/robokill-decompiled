@@ -6,145 +6,173 @@ package Engine.Common.Math
       {
          super();
       }
-      
-      public static function b2CrossVF(param1:b2Vec2, param2:Number) : b2Vec2
+
+      // Cross product of vector and scalar: v × s
+      public static function b2CrossVF(v:b2Vec2, s:Number) : b2Vec2
       {
-         return new b2Vec2(param2 * param1.y,-param2 * param1.x);
+         return new b2Vec2(s * v.y, -s * v.x);
       }
-      
-      public static function AddVV(param1:b2Vec2, param2:b2Vec2) : b2Vec2
+
+      // Add two vectors
+      public static function AddVV(a:b2Vec2, b:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(param1.x + param2.x,param1.y + param2.y);
+         return new b2Vec2(a.x + b.x, a.y + b.y);
       }
-      
-      public static function b2IsValid(param1:Number) : *
+
+      // Check if a number is valid (not NaN or Infinity)
+      public static function b2IsValid(value:Number) : Boolean
       {
-         return isFinite(param1);
+         return isFinite(value);
       }
-      
-      public static function b2Swap(param1:Array, param2:Array) : *
+
+      // Swap the first element of two single-element arrays
+      public static function b2Swap(a:Array, b:Array) : void
       {
-         var _loc3_:* = param1[0];
-         param1[0] = param2[0];
-         param2[0] = _loc3_;
+         var temp:* = a[0];
+         a[0] = b[0];
+         b[0] = temp;
       }
-      
-      public static function b2Abs(param1:Number) : Number
+
+      // Absolute value of a number
+      public static function b2Abs(value:Number) : Number
       {
-         return param1 > 0 ? param1 : -param1;
+         return value > 0 ? value : -value;
       }
-      
-      public static function b2AbsM(param1:b2Mat22) : b2Mat22
+
+      // Absolute value of matrix: applies abs() to each element
+      public static function b2AbsM(mat:b2Mat22) : b2Mat22
       {
-         return new b2Mat22(0,b2AbsV(param1.col1),b2AbsV(param1.col2));
+         return new b2Mat22(0, b2AbsV(mat.col1), b2AbsV(mat.col2));
       }
-      
-      public static function SubtractVV(param1:b2Vec2, param2:b2Vec2) : b2Vec2
+
+      // Subtract two vectors: a - b
+      public static function SubtractVV(a:b2Vec2, b:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(param1.x - param2.x,param1.y - param2.y);
+         return new b2Vec2(a.x - b.x, a.y - b.y);
       }
-      
-      public static function b2CrossVV(param1:b2Vec2, param2:b2Vec2) : Number
+
+      // 2D cross product of two vectors (returns a scalar)
+      public static function b2CrossVV(a:b2Vec2, b:b2Vec2) : Number
       {
-         return param1.x * param2.y - param1.y * param2.x;
+         return a.x * b.y - a.y * b.x;
       }
-      
-      public static function b2Clamp(param1:Number, param2:Number, param3:Number) : Number
+
+      // Clamp a value between min and max
+      public static function b2Clamp(value:Number, min:Number, max:Number) : Number
       {
-         return b2Max(param2,b2Min(param1,param3));
+         return b2Max(min, b2Min(value, max));
       }
-      
-      public static function b2AbsV(param1:b2Vec2) : b2Vec2
+
+      // Absolute value of a vector
+      public static function b2AbsV(v:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(b2Abs(param1.x),b2Abs(param1.y));
+         return new b2Vec2(b2Abs(v.x), b2Abs(v.y));
       }
-      
-      public static function b2MinV(param1:b2Vec2, param2:b2Vec2) : b2Vec2
+
+      // Component-wise minimum of two vectors
+      public static function b2MinV(a:b2Vec2, b:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(b2Min(param1.x,param2.x),b2Min(param1.y,param2.y));
+         return new b2Vec2(b2Min(a.x, b.x), b2Min(a.y, b.y));
       }
-      
-      public static function b2Dot(param1:b2Vec2, param2:b2Vec2) : Number
+
+      // Dot product of two vectors
+      public static function b2Dot(a:b2Vec2, b:b2Vec2) : Number
       {
-         return param1.x * param2.x + param1.y * param2.y;
+         return a.x * b.x + a.y * b.y;
       }
-      
-      public static function b2CrossFV(param1:Number, param2:b2Vec2) : b2Vec2
+
+      // Cross product of scalar and vector: s × v
+      public static function b2CrossFV(s:Number, v:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(-param1 * param2.y,param1 * param2.x);
+         return new b2Vec2(-s * v.y, s * v.x);
       }
-      
-      public static function AddMM(param1:b2Mat22, param2:b2Mat22) : b2Mat22
+
+      // Matrix addition
+      public static function AddMM(a:b2Mat22, b:b2Mat22) : b2Mat22
       {
-         return new b2Mat22(0,AddVV(param1.col1,param2.col1),AddVV(param1.col2,param2.col2));
+         return new b2Mat22(0, AddVV(a.col1, b.col1), AddVV(a.col2, b.col2));
       }
-      
-      public static function b2MulTMM(param1:b2Mat22, param2:b2Mat22) : b2Mat22
+
+      // Transpose(M1) * M2
+      public static function b2MulTMM(m1:b2Mat22, m2:b2Mat22) : b2Mat22
       {
-         var _loc3_:b2Vec2 = new b2Vec2(b2Dot(param1.col1,param2.col1),b2Dot(param1.col2,param2.col1));
-         var _loc4_:b2Vec2 = new b2Vec2(b2Dot(param1.col1,param2.col2),b2Dot(param1.col2,param2.col2));
-         return new b2Mat22(0,_loc3_,_loc4_);
+         var col1:b2Vec2 = new b2Vec2(b2Dot(m1.col1, m2.col1), b2Dot(m1.col2, m2.col1));
+         var col2:b2Vec2 = new b2Vec2(b2Dot(m1.col1, m2.col2), b2Dot(m1.col2, m2.col2));
+         return new b2Mat22(0, col1, col2);
       }
-      
-      public static function b2MaxV(param1:b2Vec2, param2:b2Vec2) : b2Vec2
+
+      // Component-wise maximum of two vectors
+      public static function b2MaxV(a:b2Vec2, b:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(b2Max(param1.x,param2.x),b2Max(param1.y,param2.y));
+         return new b2Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y));
       }
-      
-      public static function b2IsPowerOfTwo(param1:uint) : Boolean
+
+      // Check if an unsigned int is a power of two
+      public static function b2IsPowerOfTwo(x:uint) : Boolean
       {
-         return param1 > 0 && (param1 & param1 - 1) == 0;
+         return x > 0 && (x & (x - 1)) == 0;
       }
-      
-      public static function b2ClampV(param1:b2Vec2, param2:b2Vec2, param3:b2Vec2) : b2Vec2
+
+      // Clamp vector within min and max vectors
+      public static function b2ClampV(v:b2Vec2, min:b2Vec2, max:b2Vec2) : b2Vec2
       {
-         return b2MaxV(param2,b2MinV(param1,param3));
+         return b2MaxV(min, b2MinV(v, max));
       }
-      
-      public static function MulFV(param1:Number, param2:b2Vec2) : b2Vec2
+
+      // Multiply scalar and vector
+      public static function MulFV(scalar:Number, v:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(param1 * param2.x,param1 * param2.y);
+         return new b2Vec2(scalar * v.x, scalar * v.y);
       }
-      
-      public static function b2MulTMV(param1:b2Mat22, param2:b2Vec2) : b2Vec2
+
+      // Multiply transpose of matrix with vector: Transpose(M) * v
+      public static function b2MulTMV(m:b2Mat22, v:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(b2Dot(param2,param1.col1),b2Dot(param2,param1.col2));
+         return new b2Vec2(b2Dot(v, m.col1), b2Dot(v, m.col2));
       }
-      
-      public static function b2Min(param1:Number, param2:Number) : Number
+
+      // Min of two numbers
+      public static function b2Min(a:Number, b:Number) : Number
       {
-         return param1 < param2 ? param1 : param2;
+         return a < b ? a : b;
       }
-      
+
+      // Random number between -1 and 1
       public static function b2Random() : Number
       {
          return Math.random() * 2 - 1;
       }
-      
-      public static function b2MulMM(param1:b2Mat22, param2:b2Mat22) : b2Mat22
+
+      // Matrix multiplication: M1 * M2
+      public static function b2MulMM(m1:b2Mat22, m2:b2Mat22) : b2Mat22
       {
-         return new b2Mat22(0,b2MulMV(param1,param2.col1),b2MulMV(param1,param2.col2));
+         return new b2Mat22(0, b2MulMV(m1, m2.col1), b2MulMV(m1, m2.col2));
       }
-      
-      public static function b2NextPowerOfTwo(param1:uint) : uint
+
+      // Next power of two for an unsigned int
+      public static function b2NextPowerOfTwo(x:uint) : uint
       {
-         param1 |= param1 >> 1 & 0x7FFFFFFF;
-         param1 |= param1 >> 2 & 0x3FFFFFFF;
-         param1 |= param1 >> 4 & 0x0FFFFFFF;
-         param1 |= param1 >> 8 & 0xFFFFFF;
-         param1 |= param1 >> 16 & 0xFFFF;
-         return param1 + 1;
+         x |= x >> 1 & 0x7FFFFFFF;
+         x |= x >> 2 & 0x3FFFFFFF;
+         x |= x >> 4 & 0x0FFFFFFF;
+         x |= x >> 8 & 0xFFFFFF;
+         x |= x >> 16 & 0xFFFF;
+         return x + 1;
       }
-      
-      public static function b2Max(param1:Number, param2:Number) : Number
+
+      // Max of two numbers
+      public static function b2Max(a:Number, b:Number) : Number
       {
-         return param1 > param2 ? param1 : param2;
+         return a > b ? a : b;
       }
-      
-      public static function b2MulMV(param1:b2Mat22, param2:b2Vec2) : b2Vec2
+
+      // Multiply matrix with vector: M * v
+      public static function b2MulMV(m:b2Mat22, v:b2Vec2) : b2Vec2
       {
-         return new b2Vec2(param1.col1.x * param2.x + param1.col2.x * param2.y,param1.col1.y * param2.x + param1.col2.y * param2.y);
+         return new b2Vec2(
+            m.col1.x * v.x + m.col2.x * v.y,
+            m.col1.y * v.x + m.col2.y * v.y
+         );
       }
    }
 }
-
