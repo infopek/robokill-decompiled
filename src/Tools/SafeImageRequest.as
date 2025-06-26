@@ -5,52 +5,51 @@ package Tools
    import flash.events.IOErrorEvent;
    import flash.events.SecurityErrorEvent;
    import flash.net.URLRequest;
-   
+
    public class SafeImageRequest
    {
       public var finished:Boolean = false;
-      
-      public var finishFunc:Function = null;
-      
-      public var ldr:Loader;
-      
-      public function SafeImageRequest(param1:String, param2:Function = null)
+
+      public var onComplete:Function = null;
+
+      public var loader:Loader;
+
+      public function SafeImageRequest(url:String, onCompleteCallback:Function = null)
       {
-         var url:String = param1;
-         var finish:Function = param2;
          super();
-         ldr = new Loader();
-         finishFunc = finish;
+         loader = new Loader();
+         onComplete = onCompleteCallback;
+
          try
          {
-            ldr.load(new URLRequest(url));
-            ldr.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR,securityErrorHandler);
-            ldr.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,ioErrorHandler);
-            ldr.contentLoaderInfo.addEventListener(Event.COMPLETE,complete);
+            loader.load(new URLRequest(url));
+            loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, handleSecurityError);
+            loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleIOError);
+            loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleComplete);
          }
-         catch(err:Error)
+         catch (err:Error)
          {
+            trace("SafeImageRequest: Load failed due to error:", err.message);
          }
       }
-      
-      public function securityErrorHandler(param1:SecurityErrorEvent) : void
+
+      public function handleSecurityError(event:SecurityErrorEvent):void
       {
-         trace("security error");
+         trace("SafeImageRequest: Security error while loading image.");
       }
-      
-      public function ioErrorHandler(param1:IOErrorEvent) : void
+
+      public function handleIOError(event:IOErrorEvent):void
       {
-         trace("IO Error");
+         trace("SafeImageRequest: IO error while loading image.");
       }
-      
-      public function complete(param1:Event) : void
+
+      public function handleComplete(event:Event):void
       {
          finished = true;
-         if(finishFunc != null)
+         if (onComplete != null)
          {
-            finishFunc();
+            onComplete();
          }
       }
    }
 }
-

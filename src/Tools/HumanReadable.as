@@ -6,128 +6,126 @@ package Tools
       {
          super();
       }
-      
-      public static function combineSentences(param1:Array, param2:Boolean = true) : String
+
+      public static function combineSentences(sentences:Array, appendPeriod:Boolean = true):String
       {
-         var _loc3_:Array = new Array();
-         var _loc4_:int = 0;
-         while(_loc4_ < param1.length)
+         var filtered:Array = [];
+         for (var i:int = 0; i < sentences.length; i++)
          {
-            if(param1[_loc4_] != "")
+            if (sentences[i] != "")
             {
-               _loc3_.push(param1[_loc4_]);
+               filtered.push(sentences[i]);
             }
-            _loc4_++;
          }
-         var _loc5_:* = "";
-         _loc4_ = 0;
-         while(_loc4_ < _loc3_.length)
+
+         var combined:String = "";
+         for (var j:int = 0; j < filtered.length; j++)
          {
-            _loc5_ += _loc3_[_loc4_];
-            if(_loc4_ != _loc3_.length - 1)
+            combined += filtered[j];
+            if (j != filtered.length - 1)
             {
-               _loc5_ += ", ";
+               combined += ", ";
             }
-            _loc4_++;
          }
-         if(param2 && _loc3_.length > 0)
+
+         if (appendPeriod && filtered.length > 0)
          {
-            _loc5_ += ".";
+            combined += ".";
          }
-         return _loc5_;
+
+         return combined;
       }
-      
-      public static function padInteger(param1:int, param2:int = 8) : String
+
+      public static function padInteger(value:int, digits:int = 8):String
       {
-         var _loc3_:String = String(param1);
-         while(_loc3_.length < param2)
+         var str:String = String(value);
+         while (str.length < digits)
          {
-            _loc3_ = "0" + _loc3_;
+            str = "0" + str;
          }
-         return _loc3_;
+         return str;
       }
-      
-      public static function splitIntoLines(param1:String, param2:String, param3:int, param4:int = -1) : Array
+
+      public static function splitIntoLines(text:String, delimiter:String, maxLineLength:int, maxLines:int = -1):Array
       {
-         var _loc9_:int = 0;
-         var _loc5_:Array = new Array();
-         if(param4 > 0)
+         var lines:Array = [];
+         if (maxLines > 0)
          {
-            _loc9_ = 0;
-            while(_loc9_ < param4)
+            for (var i:int = 0; i < maxLines; i++)
             {
-               _loc5_[_loc9_] = "";
-               _loc9_++;
+               lines[i] = "";
             }
          }
-         var _loc6_:Array = param1.split(param2);
-         var _loc7_:int = 0;
-         var _loc8_:int = 0;
-         _loc9_ = 0;
-         while(_loc9_ < _loc6_.length)
+
+         var tokens:Array = text.split(delimiter);
+         var currentLine:int = 0;
+
+         for (var j:int = 0; j < tokens.length; j++)
          {
-            _loc8_ = int(_loc5_[_loc7_].length);
-            if(_loc8_ > 0 && (_loc7_ < param4 || param4 == -1))
+            var currentLength:int = lines[currentLine] ? lines[currentLine].length : 0;
+
+            if (currentLength > 0 && (currentLine < maxLines || maxLines == -1))
             {
-               if(_loc8_ + _loc6_[_loc9_].length + _loc6_.length > param3)
+               if (currentLength + tokens[j].length + tokens.length > maxLineLength)
                {
-                  _loc8_ = 0;
-                  _loc7_++;
+                  currentLine++;
                }
             }
-            if(!(_loc5_[_loc7_] is String))
+
+            if (!(lines[currentLine] is String))
             {
-               _loc5_[_loc7_] = "";
+               lines[currentLine] = "";
             }
-            _loc5_[_loc7_] += _loc6_[_loc9_];
-            if(_loc9_ < _loc6_.length - 1)
+
+            lines[currentLine] += tokens[j];
+
+            if (j < tokens.length - 1)
             {
-               _loc5_[_loc7_] += param2;
+               lines[currentLine] += delimiter;
             }
-            _loc9_++;
          }
-         return _loc5_;
+
+         return lines;
       }
-      
-      public static function truncateFloat(param1:Number, param2:int = 2) : String
+
+      public static function truncateFloat(number:Number, precision:int = 2):String
       {
-         var _loc3_:String = String(param1);
-         var _loc4_:String = _loc3_.split(".")[0];
-         var _loc5_:String = _loc3_.split(".")[1];
-         if(_loc5_)
+         var numStr:String = String(number);
+         var integerPart:String = numStr.split(".")[0];
+         var decimalPart:String = numStr.split(".")[1];
+
+         if (decimalPart)
          {
-            if(_loc5_.length > 2)
+            if (decimalPart.length > precision)
             {
-               _loc5_ = _loc5_.substr(0,2);
+               decimalPart = decimalPart.substr(0, precision);
             }
          }
-         var _loc6_:String = _loc4_;
-         if(_loc5_)
+
+         var result:String = integerPart;
+         if (decimalPart && decimalPart.length > 0)
          {
-            if(_loc5_.length > 0)
-            {
-               _loc6_ += "." + _loc5_;
-            }
+            result += "." + decimalPart;
          }
-         return _loc6_;
+
+         return result;
       }
-      
-      public static function formatInteger(param1:int) : String
+
+      public static function formatInteger(value:int):String
       {
-         var _loc2_:String = String(param1);
-         var _loc3_:String = "";
-         var _loc4_:int = 0;
-         while(_loc4_ < _loc2_.length)
+         var str:String = String(value);
+         var formatted:String = "";
+
+         for (var i:int = 0; i < str.length; i++)
          {
-            _loc3_ = _loc2_.substring(_loc2_.length - _loc4_ - 1,_loc2_.length - _loc4_) + _loc3_;
-            if(_loc4_ % 3 == 2 && _loc4_ < _loc2_.length - 1)
+            formatted = str.substring(str.length - i - 1, str.length - i) + formatted;
+            if (i % 3 == 2 && i < str.length - 1)
             {
-               _loc3_ = "," + _loc3_;
+               formatted = "," + formatted;
             }
-            _loc4_++;
          }
-         return _loc3_;
+
+         return formatted;
       }
    }
 }
-

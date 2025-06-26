@@ -3,178 +3,159 @@ package Tools
    public class PathfindToPoint
    {
       public var width:int = 0;
-      
-      public var basdf:int = 0;
-      
-      public var iteration:int = 0;
-      
-      public var markNext:Array = new Array(512);
-      
-      public var markNextLength:int = 0;
-      
       public var height:int = 0;
-      
-      public var marked:Array = new Array(512);
-      
-      public var markedLength:int = 0;
-      
-      public var lastMarkX:int = -1;
-      
-      public var lastMarkY:int = -1;
-      
-      public var allowFlying:Boolean = false;
-      
+
+      public var updateCounter:int = 0;
+      public var iteration:int = 0;
+
       public var field:Array;
-      
-      public function PathfindToPoint(param1:int, param2:int)
+
+      public var markNext:Array = new Array(512);
+      public var markNextLength:int = 0;
+
+      public var marked:Array = new Array(512);
+      public var markedLength:int = 0;
+
+      public var lastMarkX:int = -1;
+      public var lastMarkY:int = -1;
+
+      public var allowFlying:Boolean = false;
+
+      public function PathfindToPoint(gridWidth:int, gridHeight:int)
       {
          super();
-         this.width = param1;
-         this.height = param2;
+         this.width = gridWidth;
+         this.height = gridHeight;
          constructArray();
       }
-      
-      public function constructArray() : void
+
+      public function constructArray():void
       {
-         var _loc2_:int = 0;
          field = new Array(width);
-         var _loc1_:int = 0;
-         while(_loc1_ < width)
+
+         for (var x:int = 0; x < width; x++)
          {
-            field[_loc1_] = new Array();
-            _loc2_ = 0;
-            while(_loc2_ < height)
+            field[x] = new Array();
+
+            for (var y:int = 0; y < height; y++)
             {
-               field[_loc1_][_loc2_] = new PathfindSquare();
-               field[_loc1_][_loc2_].x = _loc1_;
-               field[_loc1_][_loc2_].y = _loc2_;
-               _loc2_++;
+               var square:PathfindSquare = new PathfindSquare();
+               square.x = x;
+               square.y = y;
+               field[x][y] = square;
             }
-            _loc1_++;
          }
       }
-      
-      public function getField(param1:int, param2:int) : PathfindSquare
+
+      public function getField(x:int, y:int):PathfindSquare
       {
-         if(param1 >= 0 && param1 < width)
+         if (x >= 0 && x < width && y >= 0 && y < height)
          {
-            if(param2 >= 0 && param2 < height)
-            {
-               return field[param1][param2];
-            }
+            return field[x][y];
          }
          return null;
       }
-      
-      public function search(param1:int, param2:int) : *
+
+      public function search(centerX:int, centerY:int):void
       {
-         var _loc4_:int = 0;
-         var _loc5_:PathfindSquare = null;
-         var _loc6_:Number = NaN;
-         var _loc7_:Boolean = false;
-         var _loc8_:int = 0;
-         ++basdf;
-         var _loc3_:int = -1;
-         while(_loc3_ < 2)
+         updateCounter++;
+
+         for (var offsetX:int = -1; offsetX <= 1; offsetX++)
          {
-            _loc4_ = -1;
-            while(_loc4_ < 2)
+            for (var offsetY:int = -1; offsetY <= 1; offsetY++)
             {
-               if(_loc3_ != 0 || _loc4_ != 0)
+               if (offsetX == 0 && offsetY == 0)
+                  continue;
+
+               var targetX:int = centerX + offsetX;
+               var targetY:int = centerY + offsetY;
+
+               if (targetX >= 0 && targetX < width && targetY >= 0 && targetY < height)
                {
-                  if(param1 + _loc3_ >= 0 && param1 + _loc3_ < width && param2 + _loc4_ >= 0 && param2 + _loc4_ < height)
+                  var neighbor:PathfindSquare = field[targetX][targetY];
+                  var distance:Number = (offsetX == 0 || offsetY == 0) ? 1.0 : 1.4;
+
+                  var current:PathfindSquare = field[centerX][centerY];
+
+                  if (distance < 1.1 && (current.dist + distance < neighbor.dist || neighbor.seq < iteration))
                   {
-                     _loc5_ = field[param1 + _loc3_][param2 + _loc4_];
-                     _loc6_ = _loc3_ == 0 || _loc4_ == 0 ? 1 : 1.4;
-                     if(_loc6_ < 1.1)
+                     neighbor.seq = iteration;
+                     neighbor.dist = current.dist + distance;
+                     neighbor.dirx = -offsetX;
+                     neighbor.diry = -offsetY;
+
+                     var traversable:Boolean = neighbor.passable;
+
+                     if (allowFlying && !neighbor.exists)
                      {
-                        if(field[param1][param2].dist + _loc6_ < _loc5_.dist || _loc5_.seq < iteration)
+                        traversable = true;
+                     }
+
+                     var alreadyQueued:Boolean = false;
+
+                     for (var i:int = 0; i < markNextLength; i++)
+                     {
+                        if (markNext[i] == neighbor)
                         {
-                           _loc5_.seq = iteration;
-                           _loc5_.dist = field[param1][param2].dist + _loc6_;
-                           _loc5_.dirx = -_loc3_;
-                           _loc5_.diry = -_loc4_;
-                           _loc7_ = _loc5_.passable;
-                           if(allowFlying && !_loc5_.exists)
-                           {
-                              _loc7_ = true;
-                           }
-                           _loc8_ = 0;
-                           while(_loc8_ < markNextLength)
-                           {
-                              if(markNext[_loc8_] == field[param1 + _loc3_][param2 + _loc4_])
-                              {
-                                 _loc7_ = false;
-                              }
-                              _loc8_++;
-                           }
-                           if(_loc7_)
-                           {
-                              markNext[markNextLength] = field[param1 + _loc3_][param2 + _loc4_];
-                              ++markNextLength;
-                           }
+                           alreadyQueued = true;
+                           break;
                         }
+                     }
+
+                     if (traversable && !alreadyQueued)
+                     {
+                        markNext[markNextLength++] = neighbor;
                      }
                   }
                }
-               _loc4_++;
             }
-            _loc3_++;
          }
       }
-      
-      public function reconstructGraph(param1:int, param2:int) : void
+
+      public function reconstructGraph(destX:int, destY:int):void
       {
-         var _loc4_:int = 0;
-         if(param1 == lastMarkX && param2 == lastMarkY)
-         {
+         if (destX == lastMarkX && destY == lastMarkY)
             return;
-         }
-         lastMarkX = param1;
-         lastMarkY = param2;
-         basdf = 0;
-         ++iteration;
-         var _loc3_:int = 0;
-         while(_loc3_ < width)
+
+         lastMarkX = destX;
+         lastMarkY = destY;
+
+         updateCounter = 0;
+         iteration++;
+
+         for (var x:int = 0; x < width; x++)
          {
-            _loc4_ = 0;
-            while(_loc4_ < height)
+            for (var y:int = 0; y < height; y++)
             {
-               field[param1][param2].isDest = param1 == _loc3_ && param2 == _loc4_;
-               _loc4_++;
+               field[destX][destY].isDest = (destX == x && destY == y);
             }
-            _loc3_++;
          }
-         field[param1][param2].dist = 0;
+
+         field[destX][destY].dist = 0;
          markNextLength = 1;
-         markNext[0] = field[param1][param2];
+         markNext[0] = field[destX][destY];
       }
-      
-      public function lazyUpdate() : void
+
+      public function lazyUpdate():void
       {
-         var _loc1_:Array = null;
-         var _loc2_:int = 0;
-         if(markNextLength > 0)
+         if (markNextLength > 0)
          {
-            _loc1_ = marked;
+            var temp:Array = marked;
             marked = markNext;
             markedLength = markNextLength;
-            markNext = _loc1_;
+            markNext = temp;
             markNextLength = 0;
-            _loc2_ = 0;
-            while(_loc2_ < markedLength)
+
+            for (var i:int = 0; i < markedLength; i++)
             {
-               marked[_loc2_].seq = iteration;
-               _loc2_++;
+               marked[i].seq = iteration;
             }
-            _loc2_ = 0;
-            while(_loc2_ < markedLength)
+
+            for (i = 0; i < markedLength; i++)
             {
-               search(marked[_loc2_].x,marked[_loc2_].y);
-               _loc2_++;
+               search(marked[i].x, marked[i].y);
             }
          }
       }
    }
 }
-

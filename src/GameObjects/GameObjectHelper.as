@@ -284,7 +284,7 @@ package GameObjects
          {
             if(_lazyLoad.finished)
             {
-               go.setupButton(Bitmap(_lazyLoad.ldr.getChildAt(0)).bitmapData,"",null,true);
+               go.setupButton(Bitmap(_lazyLoad.loader.getChildAt(0)).bitmapData,"",null,true);
                go.baseWidth = go.obj.width;
                go.baseHeight = go.obj.height;
                _lazyLoad = null;

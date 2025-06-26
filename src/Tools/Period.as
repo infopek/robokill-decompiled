@@ -6,24 +6,37 @@ package Tools
       {
          super();
       }
-      
-      public static function getPeriod(param1:int, param2:int, param3:int, param4:int, param5:int, param6:int) : Number
+
+      /**
+       * Generates a value between 0 and 1 that follows a rising and falling waveform across a cycle.
+       * 
+       * @param time       Current time or counter value (e.g., frame count)
+       * @param period     Length of the full period (e.g., 120 frames)
+       * @param riseStart  Time when the rise phase starts (inclusive)
+       * @param riseEnd    Time when the rise phase ends and peak is reached
+       * @param fallStart  Time when falling begins (remains at 1 until this point)
+       * @param fallEnd    Time when the value falls back to 0
+       */
+      public static function getPeriod(time:int, period:int, riseStart:int, riseEnd:int, fallStart:int, fallEnd:int):Number
       {
-         var _loc7_:int = param1 % param2;
-         if(_loc7_ < param3)
+         var phaseOffset:int = time % period;
+
+         if (phaseOffset < riseStart)
          {
             return 0;
          }
-         if(_loc7_ < param4)
+
+         if (phaseOffset < riseEnd)
          {
-            return Interpolation.linearInterpolate(0,1,Interpolation.fromTo(_loc7_,param3,param4));
+            return Interpolation.linearInterpolate(0, 1, Interpolation.fromTo(phaseOffset, riseStart, riseEnd));
          }
-         if(_loc7_ < param5)
+
+         if (phaseOffset < fallStart)
          {
             return 1;
          }
-         return Interpolation.linearInterpolateLock(1,0,Interpolation.fromTo(_loc7_,param5,param6));
+
+         return Interpolation.linearInterpolateLock(1, 0, Interpolation.fromTo(phaseOffset, fallStart, fallEnd));
       }
    }
 }
-

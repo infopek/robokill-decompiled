@@ -4,33 +4,35 @@ package Tools
    import flash.net.URLRequestMethod;
    import flash.net.URLVariables;
    import flash.net.navigateToURL;
-   
+
    public class Net
    {
       public function Net()
       {
          super();
       }
-      
-      public static function openURL(param1:String) : void
+
+      public static function openURL(url:String):void
       {
-         navigateToURL(new URLRequest(param1));
+         navigateToURL(new URLRequest(url));
       }
-      
-      public static function postURL(param1:String, param2:Array) : void
+
+      public static function postURL(url:String, keyValuePairs:Array):void
       {
-         var _loc5_:Array = null;
-         var _loc3_:URLRequest = new URLRequest(param1);
-         _loc3_.method = URLRequestMethod.POST;
-         var _loc4_:URLVariables = new URLVariables();
-         for each(_loc5_ in param2)
+         var request:URLRequest = new URLRequest(url);
+         request.method = URLRequestMethod.POST;
+
+         var variables:URLVariables = new URLVariables();
+
+         for each (var pair:Array in keyValuePairs)
          {
-            _loc4_[_loc5_[0]] = _loc5_[1];
+            variables[pair[0]] = pair[1];
          }
-         _loc3_.data = _loc4_;
-         trace(_loc3_.method);
-         navigateToURL(_loc3_);
+
+         request.data = variables;
+
+         trace(request.method);
+         navigateToURL(request);
       }
    }
 }
-

@@ -45,8 +45,8 @@ package GameObjects
          if(!world)
          {
             _loc1_ = new b2AABB();
-            _loc1_.minVertex.Set(-100,-100);
-            _loc1_.maxVertex.Set(100,100);
+            _loc1_.lowerCorner.Set(-100,-100);
+            _loc1_.upperCorner.Set(100,100);
             _loc2_ = new b2Vec2(0,0);
             _loc3_ = true;
             world = new b2World(_loc1_,_loc2_,_loc3_);

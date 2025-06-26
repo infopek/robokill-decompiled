@@ -25,80 +25,80 @@ package Engine.Collision
       
       public static function EdgeSeparation(param1:b2PolyShape, param2:int, param3:b2PolyShape) : Number
       {
-         var _loc5_:Array = null;
-         var _loc8_:int = 0;
-         var _loc14_:Number = NaN;
-         var _loc23_:b2Vec2 = null;
-         var _loc24_:Number = NaN;
-         var _loc4_:int = param1.m_vertexCount;
-         _loc5_ = param1.m_vertices;
-         var _loc6_:int = param3.m_vertexCount;
-         var _loc7_:Array = param3.m_vertices;
-         _loc8_ = param2;
-         var _loc9_:int = param2 + 1 == _loc4_ ? 0 : param2 + 1;
-         var _loc10_:Number = _loc5_[_loc9_].x - _loc5_[_loc8_].x;
-         var _loc11_:Number = _loc5_[_loc9_].y - _loc5_[_loc8_].y;
-         var _loc12_:Number = _loc10_;
-         _loc10_ = _loc11_;
-         _loc11_ = -_loc12_;
-         var _loc13_:Number = 1 / Math.sqrt(_loc10_ * _loc10_ + _loc11_ * _loc11_);
-         _loc10_ *= _loc13_;
-         _loc11_ *= _loc13_;
-         _loc14_ = _loc10_;
-         var _loc15_:Number = _loc11_;
-         _loc12_ = _loc14_;
-         var _loc16_:b2Mat22 = param1.m_R;
-         _loc14_ = _loc16_.col1.x * _loc12_ + _loc16_.col2.x * _loc15_;
-         _loc15_ = _loc16_.col1.y * _loc12_ + _loc16_.col2.y * _loc15_;
-         var _loc17_:Number = _loc14_;
-         var _loc18_:Number = _loc15_;
-         _loc16_ = param3.m_R;
-         _loc12_ = _loc17_ * _loc16_.col1.x + _loc18_ * _loc16_.col1.y;
-         _loc18_ = _loc17_ * _loc16_.col2.x + _loc18_ * _loc16_.col2.y;
-         _loc17_ = _loc12_;
-         var _loc19_:int = 0;
-         var _loc20_:Number = Number.MAX_VALUE;
-         var _loc21_:int = 0;
-         while(_loc21_ < _loc6_)
+         var var5:Array = null;
+         var var8:int = 0;
+         var var14:Number = NaN;
+         var var23:b2Vec2 = null;
+         var var24:Number = NaN;
+         var var4:int = param1.m_vertexCount;
+         var5 = param1.m_vertices;
+         var var6:int = param3.m_vertexCount;
+         var var7:Array = param3.m_vertices;
+         var8 = param2;
+         var var9:int = param2 + 1 == var4 ? 0 : param2 + 1;
+         var var10:Number = var5[var9].x - var5[var8].x;
+         var var11:Number = var5[var9].y - var5[var8].y;
+         var var12:Number = var10;
+         var10 = var11;
+         var11 = -var12;
+         var var13:Number = 1 / Math.sqrt(var10 * var10 + var11 * var11);
+         var10 *= var13;
+         var11 *= var13;
+         var14 = var10;
+         var var15:Number = var11;
+         var12 = var14;
+         var var16:b2Mat22 = param1.m_R;
+         var14 = var16.col1.x * var12 + var16.col2.x * var15;
+         var15 = var16.col1.y * var12 + var16.col2.y * var15;
+         var var17:Number = var14;
+         var var18:Number = var15;
+         var16 = param3.m_R;
+         var12 = var17 * var16.col1.x + var18 * var16.col1.y;
+         var18 = var17 * var16.col2.x + var18 * var16.col2.y;
+         var17 = var12;
+         var var19:int = 0;
+         var var20:Number = Number.MAX_VALUE;
+         var var21:int = 0;
+         while(var21 < var6)
          {
-            _loc23_ = _loc7_[_loc21_];
-            _loc24_ = _loc23_.x * _loc17_ + _loc23_.y * _loc18_;
-            if(_loc24_ < _loc20_)
+            var23 = var7[var21];
+            var24 = var23.x * var17 + var23.y * var18;
+            if(var24 < var20)
             {
-               _loc20_ = _loc24_;
-               _loc19_ = _loc21_;
+               var20 = var24;
+               var19 = var21;
             }
-            _loc21_++;
+            var21++;
          }
          v1.x = 0;
          v1.y = 0;
-         v1.SetV(_loc5_[_loc8_]);
+         v1.SetV(var5[var8]);
          v1.MulM(param1.m_R);
          v1.Add(param1.m_position);
          v2.x = 0;
          v2.y = 0;
-         v2.SetV(_loc7_[_loc19_]);
+         v2.SetV(var7[var19]);
          v2.MulM(param3.m_R);
          v2.Add(param3.m_position);
          v2.Subtract(v1);
-         return v2.x * _loc14_ + v2.y * _loc15_;
+         return v2.x * var14 + v2.y * var15;
       }
       
       public static function b2TestOverlap(param1:b2AABB, param2:b2AABB) : Boolean
       {
-         var _loc3_:b2Vec2 = param2.minVertex;
-         var _loc4_:b2Vec2 = param1.maxVertex;
-         var _loc5_:Number = _loc3_.x - _loc4_.x;
-         var _loc6_:Number = _loc3_.y - _loc4_.y;
-         _loc3_ = param1.minVertex;
-         _loc4_ = param2.maxVertex;
-         var _loc7_:Number = _loc3_.x - _loc4_.x;
-         var _loc8_:Number = _loc3_.y - _loc4_.y;
-         if(_loc5_ > 0 || _loc6_ > 0)
+         var var3:b2Vec2 = param2.lowerCorner;
+         var var4:b2Vec2 = param1.upperCorner;
+         var var5:Number = var3.x - var4.x;
+         var var6:Number = var3.y - var4.y;
+         var3 = param1.lowerCorner;
+         var4 = param2.upperCorner;
+         var var7:Number = var3.x - var4.x;
+         var var8:Number = var3.y - var4.y;
+         if(var5 > 0 || var6 > 0)
          {
             return false;
          }
-         if(_loc7_ > 0 || _loc8_ > 0)
+         if(var7 > 0 || var8 > 0)
          {
             return false;
          }
@@ -107,220 +107,220 @@ package Engine.Collision
       
       public static function b2CollidePolyAndCircle(param1:b2Manifold, param2:b2PolyShape, param3:b2CircleShape) : *
       {
-         var _loc4_:b2ContactPoint = null;
-         var _loc5_:Number = NaN;
-         var _loc6_:Number = NaN;
-         var _loc11_:Number = NaN;
-         var _loc22_:Number = NaN;
-         var _loc23_:Number = NaN;
-         var _loc24_:Number = NaN;
-         var _loc25_:b2Vec2 = null;
+         var var4:b2ContactPoint = null;
+         var var5:Number = NaN;
+         var var6:Number = NaN;
+         var var11:Number = NaN;
+         var var22:Number = NaN;
+         var var23:Number = NaN;
+         var var24:Number = NaN;
+         var var25:b2Vec2 = null;
          param1.pointCount = 0;
-         var _loc7_:Number = param3.m_position.x - param2.m_position.x;
-         var _loc8_:Number = param3.m_position.y - param2.m_position.y;
-         var _loc9_:b2Mat22 = param2.m_R;
-         var _loc10_:Number = _loc7_ * _loc9_.col1.x + _loc8_ * _loc9_.col1.y;
-         _loc8_ = _loc7_ * _loc9_.col2.x + _loc8_ * _loc9_.col2.y;
-         _loc7_ = _loc10_;
-         var _loc12_:int = 0;
-         var _loc13_:Number = -Number.MAX_VALUE;
-         var _loc14_:Number = param3.m_radius;
-         var _loc15_:int = 0;
-         while(_loc15_ < param2.m_vertexCount)
+         var var7:Number = param3.m_position.x - param2.m_position.x;
+         var var8:Number = param3.m_position.y - param2.m_position.y;
+         var var9:b2Mat22 = param2.m_R;
+         var var10:Number = var7 * var9.col1.x + var8 * var9.col1.y;
+         var8 = var7 * var9.col2.x + var8 * var9.col2.y;
+         var7 = var10;
+         var var12:int = 0;
+         var var13:Number = -Number.MAX_VALUE;
+         var var14:Number = param3.m_radius;
+         var var15:int = 0;
+         while(var15 < param2.m_vertexCount)
          {
-            _loc24_ = param2.m_normals[_loc15_].x * (_loc7_ - param2.m_vertices[_loc15_].x) + param2.m_normals[_loc15_].y * (_loc8_ - param2.m_vertices[_loc15_].y);
-            if(_loc24_ > _loc14_)
+            var24 = param2.m_normals[var15].x * (var7 - param2.m_vertices[var15].x) + param2.m_normals[var15].y * (var8 - param2.m_vertices[var15].y);
+            if(var24 > var14)
             {
                return;
             }
-            if(_loc24_ > _loc13_)
+            if(var24 > var13)
             {
-               _loc13_ = _loc24_;
-               _loc12_ = _loc15_;
+               var13 = var24;
+               var12 = var15;
             }
-            _loc15_++;
+            var15++;
          }
-         if(_loc13_ < Number.MIN_VALUE)
+         if(var13 < Number.MIN_VALUE)
          {
             param1.pointCount = 1;
-            _loc25_ = param2.m_normals[_loc12_];
-            param1.normal.x = _loc9_.col1.x * _loc25_.x + _loc9_.col2.x * _loc25_.y;
-            param1.normal.y = _loc9_.col1.y * _loc25_.x + _loc9_.col2.y * _loc25_.y;
-            _loc4_ = param1.points[0];
-            _loc4_.id.features.incidentEdge = _loc12_;
-            _loc4_.id.features.incidentVertex = b2_nullFeature;
-            _loc4_.id.features.referenceFace = b2_nullFeature;
-            _loc4_.id.features.flip = 0;
-            _loc4_.position.x = param3.m_position.x - _loc14_ * param1.normal.x;
-            _loc4_.position.y = param3.m_position.y - _loc14_ * param1.normal.y;
-            _loc4_.separation = _loc13_ - _loc14_;
+            var25 = param2.m_normals[var12];
+            param1.normal.x = var9.col1.x * var25.x + var9.col2.x * var25.y;
+            param1.normal.y = var9.col1.y * var25.x + var9.col2.y * var25.y;
+            var4 = param1.points[0];
+            var4.id.features.incidentEdge = var12;
+            var4.id.features.incidentVertex = b2_nullFeature;
+            var4.id.features.referenceFace = b2_nullFeature;
+            var4.id.features.flip = 0;
+            var4.position.x = param3.m_position.x - var14 * param1.normal.x;
+            var4.position.y = param3.m_position.y - var14 * param1.normal.y;
+            var4.separation = var13 - var14;
             return;
          }
-         var _loc16_:int = _loc12_;
-         var _loc17_:int = int(param2.m_nextVert[_loc16_]);
-         var _loc18_:Number = param2.m_vertices[_loc17_].x - param2.m_vertices[_loc16_].x;
-         var _loc19_:Number = param2.m_vertices[_loc17_].y - param2.m_vertices[_loc16_].y;
-         var _loc20_:Number = Math.sqrt(_loc18_ * _loc18_ + _loc19_ * _loc19_);
-         _loc18_ /= _loc20_;
-         _loc19_ /= _loc20_;
-         if(_loc20_ < Number.MIN_VALUE)
+         var var16:int = var12;
+         var var17:int = int(param2.m_nextVert[var16]);
+         var var18:Number = param2.m_vertices[var17].x - param2.m_vertices[var16].x;
+         var var19:Number = param2.m_vertices[var17].y - param2.m_vertices[var16].y;
+         var var20:Number = Math.sqrt(var18 * var18 + var19 * var19);
+         var18 /= var20;
+         var19 /= var20;
+         if(var20 < Number.MIN_VALUE)
          {
-            _loc5_ = _loc7_ - param2.m_vertices[_loc16_].x;
-            _loc6_ = _loc8_ - param2.m_vertices[_loc16_].y;
-            _loc11_ = Math.sqrt(_loc5_ * _loc5_ + _loc6_ * _loc6_);
-            _loc5_ /= _loc11_;
-            _loc6_ /= _loc11_;
-            if(_loc11_ > _loc14_)
+            var5 = var7 - param2.m_vertices[var16].x;
+            var6 = var8 - param2.m_vertices[var16].y;
+            var11 = Math.sqrt(var5 * var5 + var6 * var6);
+            var5 /= var11;
+            var6 /= var11;
+            if(var11 > var14)
             {
                return;
             }
             param1.pointCount = 1;
-            param1.normal.Set(_loc9_.col1.x * _loc5_ + _loc9_.col2.x * _loc6_,_loc9_.col1.y * _loc5_ + _loc9_.col2.y * _loc6_);
-            _loc4_ = param1.points[0];
-            _loc4_.id.features.incidentEdge = b2_nullFeature;
-            _loc4_.id.features.incidentVertex = _loc16_;
-            _loc4_.id.features.referenceFace = b2_nullFeature;
-            _loc4_.id.features.flip = 0;
-            _loc4_.position.x = param3.m_position.x - _loc14_ * param1.normal.x;
-            _loc4_.position.y = param3.m_position.y - _loc14_ * param1.normal.y;
-            _loc4_.separation = _loc11_ - _loc14_;
+            param1.normal.Set(var9.col1.x * var5 + var9.col2.x * var6,var9.col1.y * var5 + var9.col2.y * var6);
+            var4 = param1.points[0];
+            var4.id.features.incidentEdge = b2_nullFeature;
+            var4.id.features.incidentVertex = var16;
+            var4.id.features.referenceFace = b2_nullFeature;
+            var4.id.features.flip = 0;
+            var4.position.x = param3.m_position.x - var14 * param1.normal.x;
+            var4.position.y = param3.m_position.y - var14 * param1.normal.y;
+            var4.separation = var11 - var14;
             return;
          }
-         var _loc21_:Number = (_loc7_ - param2.m_vertices[_loc16_].x) * _loc18_ + (_loc8_ - param2.m_vertices[_loc16_].y) * _loc19_;
-         _loc4_ = param1.points[0];
-         _loc4_.id.features.incidentEdge = b2_nullFeature;
-         _loc4_.id.features.incidentVertex = b2_nullFeature;
-         _loc4_.id.features.referenceFace = b2_nullFeature;
-         _loc4_.id.features.flip = 0;
-         if(_loc21_ <= 0)
+         var var21:Number = (var7 - param2.m_vertices[var16].x) * var18 + (var8 - param2.m_vertices[var16].y) * var19;
+         var4 = param1.points[0];
+         var4.id.features.incidentEdge = b2_nullFeature;
+         var4.id.features.incidentVertex = b2_nullFeature;
+         var4.id.features.referenceFace = b2_nullFeature;
+         var4.id.features.flip = 0;
+         if(var21 <= 0)
          {
-            _loc22_ = Number(param2.m_vertices[_loc16_].x);
-            _loc23_ = Number(param2.m_vertices[_loc16_].y);
-            _loc4_.id.features.incidentVertex = _loc16_;
+            var22 = Number(param2.m_vertices[var16].x);
+            var23 = Number(param2.m_vertices[var16].y);
+            var4.id.features.incidentVertex = var16;
          }
-         else if(_loc21_ >= _loc20_)
+         else if(var21 >= var20)
          {
-            _loc22_ = Number(param2.m_vertices[_loc17_].x);
-            _loc23_ = Number(param2.m_vertices[_loc17_].y);
-            _loc4_.id.features.incidentVertex = _loc17_;
+            var22 = Number(param2.m_vertices[var17].x);
+            var23 = Number(param2.m_vertices[var17].y);
+            var4.id.features.incidentVertex = var17;
          }
          else
          {
-            _loc22_ = _loc18_ * _loc21_ + param2.m_vertices[_loc16_].x;
-            _loc23_ = _loc19_ * _loc21_ + param2.m_vertices[_loc16_].y;
-            _loc4_.id.features.incidentEdge = _loc16_;
+            var22 = var18 * var21 + param2.m_vertices[var16].x;
+            var23 = var19 * var21 + param2.m_vertices[var16].y;
+            var4.id.features.incidentEdge = var16;
          }
-         _loc5_ = _loc7_ - _loc22_;
-         _loc6_ = _loc8_ - _loc23_;
-         _loc11_ = Math.sqrt(_loc5_ * _loc5_ + _loc6_ * _loc6_);
-         _loc5_ /= _loc11_;
-         _loc6_ /= _loc11_;
-         if(_loc11_ > _loc14_)
+         var5 = var7 - var22;
+         var6 = var8 - var23;
+         var11 = Math.sqrt(var5 * var5 + var6 * var6);
+         var5 /= var11;
+         var6 /= var11;
+         if(var11 > var14)
          {
             return;
          }
          param1.pointCount = 1;
-         param1.normal.Set(_loc9_.col1.x * _loc5_ + _loc9_.col2.x * _loc6_,_loc9_.col1.y * _loc5_ + _loc9_.col2.y * _loc6_);
-         _loc4_.position.x = param3.m_position.x - _loc14_ * param1.normal.x;
-         _loc4_.position.y = param3.m_position.y - _loc14_ * param1.normal.y;
-         _loc4_.separation = _loc11_ - _loc14_;
+         param1.normal.Set(var9.col1.x * var5 + var9.col2.x * var6,var9.col1.y * var5 + var9.col2.y * var6);
+         var4.position.x = param3.m_position.x - var14 * param1.normal.x;
+         var4.position.y = param3.m_position.y - var14 * param1.normal.y;
+         var4.separation = var11 - var14;
       }
       
       public static function FindIncidentEdge(param1:Array, param2:b2PolyShape, param3:int, param4:b2PolyShape) : *
       {
-         var _loc21_:int = 0;
-         var _loc22_:int = 0;
-         var _loc25_:ClipVertex = null;
-         var _loc26_:int = 0;
-         var _loc27_:int = 0;
-         var _loc28_:Number = NaN;
-         var _loc29_:Number = NaN;
-         var _loc30_:Number = NaN;
-         var _loc5_:int = param2.m_vertexCount;
-         var _loc6_:Array = param2.m_vertices;
-         var _loc7_:int = param4.m_vertexCount;
-         var _loc8_:Array = param4.m_vertices;
-         var _loc9_:int = param3;
-         var _loc10_:int = param3 + 1 == _loc5_ ? 0 : param3 + 1;
-         var _loc11_:b2Vec2 = _loc6_[_loc10_];
-         var _loc12_:Number = _loc11_.x;
-         var _loc13_:Number = _loc11_.y;
-         _loc11_ = _loc6_[_loc9_];
-         _loc12_ -= _loc11_.x;
-         _loc13_ -= _loc11_.y;
-         var _loc14_:Number = _loc12_;
-         _loc12_ = _loc13_;
-         _loc13_ = -_loc14_;
-         var _loc15_:Number = 1 / Math.sqrt(_loc12_ * _loc12_ + _loc13_ * _loc13_);
-         _loc12_ *= _loc15_;
-         _loc13_ *= _loc15_;
-         var _loc16_:Number = _loc12_;
-         var _loc17_:Number = _loc13_;
-         _loc14_ = _loc16_;
-         var _loc18_:b2Mat22 = param2.m_R;
-         _loc16_ = _loc18_.col1.x * _loc14_ + _loc18_.col2.x * _loc17_;
-         _loc17_ = _loc18_.col1.y * _loc14_ + _loc18_.col2.y * _loc17_;
-         var _loc19_:Number = _loc16_;
-         var _loc20_:Number = _loc17_;
-         _loc18_ = param4.m_R;
-         _loc14_ = _loc19_ * _loc18_.col1.x + _loc20_ * _loc18_.col1.y;
-         _loc20_ = _loc19_ * _loc18_.col2.x + _loc20_ * _loc18_.col2.y;
-         _loc19_ = _loc14_;
-         var _loc23_:Number = Number.MAX_VALUE;
-         var _loc24_:int = 0;
-         while(_loc24_ < _loc7_)
+         var var21:int = 0;
+         var var22:int = 0;
+         var var25:ClipVertex = null;
+         var var26:int = 0;
+         var var27:int = 0;
+         var var28:Number = NaN;
+         var var29:Number = NaN;
+         var var30:Number = NaN;
+         var var5:int = param2.m_vertexCount;
+         var var6:Array = param2.m_vertices;
+         var var7:int = param4.m_vertexCount;
+         var var8:Array = param4.m_vertices;
+         var var9:int = param3;
+         var var10:int = param3 + 1 == var5 ? 0 : param3 + 1;
+         var var11:b2Vec2 = var6[var10];
+         var var12:Number = var11.x;
+         var var13:Number = var11.y;
+         var11 = var6[var9];
+         var12 -= var11.x;
+         var13 -= var11.y;
+         var var14:Number = var12;
+         var12 = var13;
+         var13 = -var14;
+         var var15:Number = 1 / Math.sqrt(var12 * var12 + var13 * var13);
+         var12 *= var15;
+         var13 *= var15;
+         var var16:Number = var12;
+         var var17:Number = var13;
+         var14 = var16;
+         var var18:b2Mat22 = param2.m_R;
+         var16 = var18.col1.x * var14 + var18.col2.x * var17;
+         var17 = var18.col1.y * var14 + var18.col2.y * var17;
+         var var19:Number = var16;
+         var var20:Number = var17;
+         var18 = param4.m_R;
+         var14 = var19 * var18.col1.x + var20 * var18.col1.y;
+         var20 = var19 * var18.col2.x + var20 * var18.col2.y;
+         var19 = var14;
+         var var23:Number = Number.MAX_VALUE;
+         var var24:int = 0;
+         while(var24 < var7)
          {
-            _loc26_ = _loc24_;
-            _loc27_ = _loc24_ + 1 < _loc7_ ? _loc24_ + 1 : 0;
-            _loc11_ = _loc8_[_loc27_];
-            _loc28_ = _loc11_.x;
-            _loc29_ = _loc11_.y;
-            _loc11_ = _loc8_[_loc26_];
-            _loc28_ -= _loc11_.x;
-            _loc29_ -= _loc11_.y;
-            _loc14_ = _loc28_;
-            _loc28_ = _loc29_;
-            _loc29_ = -_loc14_;
-            _loc15_ = 1 / Math.sqrt(_loc28_ * _loc28_ + _loc29_ * _loc29_);
-            _loc28_ *= _loc15_;
-            _loc29_ *= _loc15_;
-            _loc30_ = _loc28_ * _loc19_ + _loc29_ * _loc20_;
-            if(_loc30_ < _loc23_)
+            var26 = var24;
+            var27 = var24 + 1 < var7 ? var24 + 1 : 0;
+            var11 = var8[var27];
+            var28 = var11.x;
+            var29 = var11.y;
+            var11 = var8[var26];
+            var28 -= var11.x;
+            var29 -= var11.y;
+            var14 = var28;
+            var28 = var29;
+            var29 = -var14;
+            var15 = 1 / Math.sqrt(var28 * var28 + var29 * var29);
+            var28 *= var15;
+            var29 *= var15;
+            var30 = var28 * var19 + var29 * var20;
+            if(var30 < var23)
             {
-               _loc23_ = _loc30_;
-               _loc21_ = _loc26_;
-               _loc22_ = _loc27_;
+               var23 = var30;
+               var21 = var26;
+               var22 = var27;
             }
-            _loc24_++;
+            var24++;
          }
-         _loc25_ = param1[0];
-         _loc11_ = _loc25_.v;
-         _loc11_.SetV(_loc8_[_loc21_]);
-         _loc11_.MulM(param4.m_R);
-         _loc11_.Add(param4.m_position);
-         _loc25_.id.features.referenceFace = param3;
-         _loc25_.id.features.incidentEdge = _loc21_;
-         _loc25_.id.features.incidentVertex = _loc21_;
-         _loc25_ = param1[1];
-         _loc11_ = _loc25_.v;
-         _loc11_.SetV(_loc8_[_loc22_]);
-         _loc11_.MulM(param4.m_R);
-         _loc11_.Add(param4.m_position);
-         _loc25_.id.features.referenceFace = param3;
-         _loc25_.id.features.incidentEdge = _loc21_;
-         _loc25_.id.features.incidentVertex = _loc22_;
+         var25 = param1[0];
+         var11 = var25.v;
+         var11.SetV(var8[var21]);
+         var11.MulM(param4.m_R);
+         var11.Add(param4.m_position);
+         var25.id.features.referenceFace = param3;
+         var25.id.features.incidentEdge = var21;
+         var25.id.features.incidentVertex = var21;
+         var25 = param1[1];
+         var11 = var25.v;
+         var11.SetV(var8[var22]);
+         var11.MulM(param4.m_R);
+         var11.Add(param4.m_position);
+         var25.id.features.referenceFace = param3;
+         var25.id.features.incidentEdge = var21;
+         var25.id.features.incidentVertex = var22;
       }
       
       public static function FindMaxSeparation(param1:Array, param2:b2PolyShape, param3:b2PolyShape) : Number
       {
-         var _loc13_:int = 0;
-         var _loc14_:Number = NaN;
-         var _loc15_:int = 0;
-         var _loc16_:Number = NaN;
-         var _loc17_:int = 0;
-         var _loc18_:Number = NaN;
-         var _loc4_:int = param2.m_vertexCount;
-         var _loc5_:Array = param2.m_vertices;
+         var var13:int = 0;
+         var var14:Number = NaN;
+         var var15:int = 0;
+         var var16:Number = NaN;
+         var var17:int = 0;
+         var var18:Number = NaN;
+         var var4:int = param2.m_vertexCount;
+         var var5:Array = param2.m_vertices;
          d.x = 0;
          d.y = 0;
          d.SetV(param3.m_position);
@@ -329,267 +329,267 @@ package Engine.Collision
          dLocal1.y = 0;
          dLocal1.SetV(d);
          dLocal1.MulTM(param2.m_R);
-         var _loc6_:int = 0;
-         var _loc7_:Number = -Number.MAX_VALUE;
-         var _loc8_:int = 0;
-         while(_loc8_ < _loc4_)
+         var var6:int = 0;
+         var var7:Number = -Number.MAX_VALUE;
+         var var8:int = 0;
+         while(var8 < var4)
          {
-            _loc16_ = b2Math.b2Dot(_loc5_[_loc8_],dLocal1);
-            if(_loc16_ > _loc7_)
+            var16 = b2Math.b2Dot(var5[var8],dLocal1);
+            if(var16 > var7)
             {
-               _loc7_ = _loc16_;
-               _loc6_ = _loc8_;
+               var7 = var16;
+               var6 = var8;
             }
-            _loc8_++;
+            var8++;
          }
-         var _loc9_:int = _loc6_ - 1 >= 0 ? _loc6_ - 1 : _loc4_ - 1;
-         var _loc10_:Number = EdgeSeparation(param2,_loc9_,param3);
-         if(_loc10_ > 0)
+         var var9:int = var6 - 1 >= 0 ? var6 - 1 : var4 - 1;
+         var var10:Number = EdgeSeparation(param2,var9,param3);
+         if(var10 > 0)
          {
-            return _loc10_;
+            return var10;
          }
-         var _loc11_:int = _loc6_;
-         var _loc12_:Number = EdgeSeparation(param2,_loc11_,param3);
-         if(_loc12_ > 0)
+         var var11:int = var6;
+         var var12:Number = EdgeSeparation(param2,var11,param3);
+         if(var12 > 0)
          {
-            return _loc12_;
+            return var12;
          }
-         if(_loc10_ > _loc12_)
+         if(var10 > var12)
          {
-            _loc15_ = -1;
-            _loc13_ = _loc9_;
-            _loc14_ = _loc10_;
+            var15 = -1;
+            var13 = var9;
+            var14 = var10;
          }
          else
          {
-            _loc15_ = 1;
-            _loc13_ = _loc11_;
-            _loc14_ = _loc12_;
+            var15 = 1;
+            var13 = var11;
+            var14 = var12;
          }
          while(true)
          {
-            if(_loc15_ == -1)
+            if(var15 == -1)
             {
-               _loc17_ = _loc13_ - 1 >= 0 ? _loc13_ - 1 : _loc4_ - 1;
+               var17 = var13 - 1 >= 0 ? var13 - 1 : var4 - 1;
             }
             else
             {
-               _loc17_ = _loc13_ + 1 < _loc4_ ? _loc13_ + 1 : 0;
+               var17 = var13 + 1 < var4 ? var13 + 1 : 0;
             }
-            _loc18_ = EdgeSeparation(param2,_loc17_,param3);
-            if(_loc18_ > 0)
+            var18 = EdgeSeparation(param2,var17,param3);
+            if(var18 > 0)
             {
                break;
             }
-            if(_loc18_ <= _loc14_)
+            if(var18 <= var14)
             {
-               param1[0] = _loc13_;
-               return _loc14_;
+               param1[0] = var13;
+               return var14;
             }
-            _loc13_ = _loc17_;
-            _loc14_ = _loc18_;
+            var13 = var17;
+            var14 = var18;
          }
-         return _loc18_;
+         return var18;
       }
       
       public static function ClipSegmentToLine(param1:Array, param2:Array, param3:b2Vec2, param4:Number) : int
       {
-         var _loc7_:b2Vec2 = null;
-         var _loc8_:Number = NaN;
-         var _loc10_:Number = NaN;
-         var _loc11_:b2Vec2 = null;
-         var _loc5_:int = 0;
-         var _loc6_:b2Vec2 = param2[0].v;
-         _loc7_ = param2[1].v;
-         _loc8_ = b2Math.b2Dot(param3,param2[0].v) - param4;
-         var _loc9_:Number = b2Math.b2Dot(param3,param2[1].v) - param4;
-         if(_loc8_ <= 0)
+         var var7:b2Vec2 = null;
+         var var8:Number = NaN;
+         var var10:Number = NaN;
+         var var11:b2Vec2 = null;
+         var var5:int = 0;
+         var var6:b2Vec2 = param2[0].v;
+         var7 = param2[1].v;
+         var8 = b2Math.b2Dot(param3,param2[0].v) - param4;
+         var var9:Number = b2Math.b2Dot(param3,param2[1].v) - param4;
+         if(var8 <= 0)
          {
-            var _loc12_:*;
-            param1[_loc12_ = _loc5_++] = param2[0];
+            var var12:*;
+            param1[var12 = var5++] = param2[0];
          }
-         if(_loc9_ <= 0)
+         if(var9 <= 0)
          {
-            param1[_loc12_ = _loc5_++] = param2[1];
+            param1[var12 = var5++] = param2[1];
          }
-         if(_loc8_ * _loc9_ < 0)
+         if(var8 * var9 < 0)
          {
-            _loc10_ = _loc8_ / (_loc8_ - _loc9_);
-            _loc11_ = param1[_loc5_].v;
-            _loc11_.x = _loc6_.x + _loc10_ * (_loc7_.x - _loc6_.x);
-            _loc11_.y = _loc6_.y + _loc10_ * (_loc7_.y - _loc6_.y);
-            if(_loc8_ > 0)
+            var10 = var8 / (var8 - var9);
+            var11 = param1[var5].v;
+            var11.x = var6.x + var10 * (var7.x - var6.x);
+            var11.y = var6.y + var10 * (var7.y - var6.y);
+            if(var8 > 0)
             {
-               param1[_loc5_].id = param2[0].id;
+               param1[var5].id = param2[0].id;
             }
             else
             {
-               param1[_loc5_].id = param2[1].id;
+               param1[var5].id = param2[1].id;
             }
-            _loc5_++;
+            var5++;
          }
-         return _loc5_;
+         return var5;
       }
       
       public static function b2CollidePoly(param1:b2Manifold, param2:b2PolyShape, param3:b2PolyShape) : *
       {
-         var _loc10_:b2PolyShape = null;
-         var _loc11_:b2PolyShape = null;
-         var _loc12_:int = 0;
-         var _loc13_:int = 0;
-         var _loc39_:int = 0;
-         var _loc42_:b2Vec2 = null;
-         var _loc43_:Number = NaN;
-         var _loc44_:b2ContactPoint = null;
+         var var10:b2PolyShape = null;
+         var var11:b2PolyShape = null;
+         var var12:int = 0;
+         var var13:int = 0;
+         var var39:int = 0;
+         var var42:b2Vec2 = null;
+         var var43:Number = NaN;
+         var var44:b2ContactPoint = null;
          param1.pointCount = 0;
-         var _loc4_:int = 0;
-         var _loc5_:Array = [_loc4_];
-         var _loc6_:Number = FindMaxSeparation(_loc5_,param2,param3);
-         _loc4_ = int(_loc5_[0]);
-         if(_loc6_ > 0)
+         var var4:int = 0;
+         var var5:Array = [var4];
+         var var6:Number = FindMaxSeparation(var5,param2,param3);
+         var4 = int(var5[0]);
+         if(var6 > 0)
          {
             return;
          }
-         var _loc7_:int = 0;
-         var _loc8_:Array = [_loc7_];
-         var _loc9_:Number = FindMaxSeparation(_loc8_,param3,param2);
-         _loc7_ = int(_loc8_[0]);
-         if(_loc9_ > 0)
+         var var7:int = 0;
+         var var8:Array = [var7];
+         var var9:Number = FindMaxSeparation(var8,param3,param2);
+         var7 = int(var8[0]);
+         if(var9 > 0)
          {
             return;
          }
-         var _loc14_:Number = 0.98;
-         var _loc15_:Number = 0.001;
-         if(_loc9_ > _loc14_ * _loc6_ + _loc15_)
+         var var14:Number = 0.98;
+         var var15:Number = 0.001;
+         if(var9 > var14 * var6 + var15)
          {
-            _loc10_ = param3;
-            _loc11_ = param2;
-            _loc12_ = _loc7_;
-            _loc13_ = 1;
+            var10 = param3;
+            var11 = param2;
+            var12 = var7;
+            var13 = 1;
          }
          else
          {
-            _loc10_ = param2;
-            _loc11_ = param3;
-            _loc12_ = _loc4_;
-            _loc13_ = 0;
+            var10 = param2;
+            var11 = param3;
+            var12 = var4;
+            var13 = 0;
          }
-         var _loc16_:Array = [new ClipVertex(),new ClipVertex()];
-         FindIncidentEdge(_loc16_,_loc10_,_loc12_,_loc11_);
-         var _loc17_:int = _loc10_.m_vertexCount;
-         var _loc18_:Array = _loc10_.m_vertices;
-         var _loc19_:b2Vec2 = _loc18_[_loc12_];
-         var _loc20_:b2Vec2 = _loc12_ + 1 < _loc17_ ? _loc18_[_loc12_ + 1] : _loc18_[0];
-         var _loc21_:Number = _loc20_.x - _loc19_.x;
-         var _loc22_:Number = _loc20_.y - _loc19_.y;
-         var _loc23_:Number = _loc20_.x - _loc19_.x;
-         var _loc24_:Number = _loc20_.y - _loc19_.y;
-         var _loc25_:Number = _loc23_;
-         var _loc26_:b2Mat22 = _loc10_.m_R;
-         _loc23_ = _loc26_.col1.x * _loc25_ + _loc26_.col2.x * _loc24_;
-         _loc24_ = _loc26_.col1.y * _loc25_ + _loc26_.col2.y * _loc24_;
-         var _loc27_:Number = 1 / Math.sqrt(_loc23_ * _loc23_ + _loc24_ * _loc24_);
-         _loc23_ *= _loc27_;
-         _loc24_ *= _loc27_;
-         var _loc28_:Number = _loc23_;
-         var _loc29_:Number = _loc24_;
-         _loc25_ = _loc28_;
-         _loc28_ = _loc29_;
-         _loc29_ = -_loc25_;
-         var _loc30_:Number = _loc19_.x;
-         var _loc31_:Number = _loc19_.y;
-         _loc25_ = _loc30_;
-         _loc26_ = _loc10_.m_R;
-         _loc30_ = _loc26_.col1.x * _loc25_ + _loc26_.col2.x * _loc31_;
-         _loc31_ = _loc26_.col1.y * _loc25_ + _loc26_.col2.y * _loc31_;
-         _loc30_ += _loc10_.m_position.x;
-         _loc31_ += _loc10_.m_position.y;
-         var _loc32_:Number = _loc20_.x;
-         var _loc33_:Number = _loc20_.y;
-         _loc25_ = _loc32_;
-         _loc26_ = _loc10_.m_R;
-         _loc32_ = _loc26_.col1.x * _loc25_ + _loc26_.col2.x * _loc33_;
-         _loc33_ = _loc26_.col1.y * _loc25_ + _loc26_.col2.y * _loc33_;
-         _loc32_ += _loc10_.m_position.x;
-         _loc33_ += _loc10_.m_position.y;
-         var _loc34_:Number = _loc28_ * _loc30_ + _loc29_ * _loc31_;
-         var _loc35_:Number = -(_loc23_ * _loc30_ + _loc24_ * _loc31_);
-         var _loc36_:Number = _loc23_ * _loc32_ + _loc24_ * _loc33_;
-         var _loc37_:Array = [new ClipVertex(),new ClipVertex()];
-         var _loc38_:Array = [new ClipVertex(),new ClipVertex()];
-         b2CollidePolyTempVec.Set(-_loc23_,-_loc24_);
-         _loc39_ = ClipSegmentToLine(_loc37_,_loc16_,b2CollidePolyTempVec,_loc35_);
-         if(_loc39_ < 2)
+         var var16:Array = [new ClipVertex(),new ClipVertex()];
+         FindIncidentEdge(var16,var10,var12,var11);
+         var var17:int = var10.m_vertexCount;
+         var var18:Array = var10.m_vertices;
+         var var19:b2Vec2 = var18[var12];
+         var var20:b2Vec2 = var12 + 1 < var17 ? var18[var12 + 1] : var18[0];
+         var var21:Number = var20.x - var19.x;
+         var var22:Number = var20.y - var19.y;
+         var var23:Number = var20.x - var19.x;
+         var var24:Number = var20.y - var19.y;
+         var var25:Number = var23;
+         var var26:b2Mat22 = var10.m_R;
+         var23 = var26.col1.x * var25 + var26.col2.x * var24;
+         var24 = var26.col1.y * var25 + var26.col2.y * var24;
+         var var27:Number = 1 / Math.sqrt(var23 * var23 + var24 * var24);
+         var23 *= var27;
+         var24 *= var27;
+         var var28:Number = var23;
+         var var29:Number = var24;
+         var25 = var28;
+         var28 = var29;
+         var29 = -var25;
+         var var30:Number = var19.x;
+         var var31:Number = var19.y;
+         var25 = var30;
+         var26 = var10.m_R;
+         var30 = var26.col1.x * var25 + var26.col2.x * var31;
+         var31 = var26.col1.y * var25 + var26.col2.y * var31;
+         var30 += var10.m_position.x;
+         var31 += var10.m_position.y;
+         var var32:Number = var20.x;
+         var var33:Number = var20.y;
+         var25 = var32;
+         var26 = var10.m_R;
+         var32 = var26.col1.x * var25 + var26.col2.x * var33;
+         var33 = var26.col1.y * var25 + var26.col2.y * var33;
+         var32 += var10.m_position.x;
+         var33 += var10.m_position.y;
+         var var34:Number = var28 * var30 + var29 * var31;
+         var var35:Number = -(var23 * var30 + var24 * var31);
+         var var36:Number = var23 * var32 + var24 * var33;
+         var var37:Array = [new ClipVertex(),new ClipVertex()];
+         var var38:Array = [new ClipVertex(),new ClipVertex()];
+         b2CollidePolyTempVec.Set(-var23,-var24);
+         var39 = ClipSegmentToLine(var37,var16,b2CollidePolyTempVec,var35);
+         if(var39 < 2)
          {
             return;
          }
-         b2CollidePolyTempVec.Set(_loc23_,_loc24_);
-         _loc39_ = ClipSegmentToLine(_loc38_,_loc37_,b2CollidePolyTempVec,_loc36_);
-         if(_loc39_ < 2)
+         b2CollidePolyTempVec.Set(var23,var24);
+         var39 = ClipSegmentToLine(var38,var37,b2CollidePolyTempVec,var36);
+         if(var39 < 2)
          {
             return;
          }
-         if(_loc13_)
+         if(var13)
          {
-            param1.normal.Set(-_loc28_,-_loc29_);
+            param1.normal.Set(-var28,-var29);
          }
          else
          {
-            param1.normal.Set(_loc28_,_loc29_);
+            param1.normal.Set(var28,var29);
          }
-         var _loc40_:int = 0;
-         var _loc41_:int = 0;
-         while(_loc41_ < b2Settings.b2_maxManifoldPoints)
+         var var40:int = 0;
+         var var41:int = 0;
+         while(var41 < b2Settings.b2_maxManifoldPoints)
          {
-            _loc42_ = _loc38_[_loc41_].v;
-            _loc43_ = _loc28_ * _loc42_.x + _loc29_ * _loc42_.y - _loc34_;
-            if(_loc43_ <= 0)
+            var42 = var38[var41].v;
+            var43 = var28 * var42.x + var29 * var42.y - var34;
+            if(var43 <= 0)
             {
-               _loc44_ = param1.points[_loc40_];
-               _loc44_.separation = _loc43_;
-               _loc44_.position.SetV(_loc38_[_loc41_].v);
-               _loc44_.id.Set(_loc38_[_loc41_].id);
-               _loc44_.id.features.flip = _loc13_;
-               _loc40_++;
+               var44 = param1.points[var40];
+               var44.separation = var43;
+               var44.position.SetV(var38[var41].v);
+               var44.id.Set(var38[var41].id);
+               var44.id.features.flip = var13;
+               var40++;
             }
-            _loc41_++;
+            var41++;
          }
-         param1.pointCount = _loc40_;
+         param1.pointCount = var40;
       }
       
       public static function b2CollideCircle(param1:b2Manifold, param2:b2CircleShape, param3:b2CircleShape) : *
       {
-         var _loc8_:Number = NaN;
-         var _loc10_:Number = NaN;
-         var _loc11_:Number = NaN;
+         var var8:Number = NaN;
+         var var10:Number = NaN;
+         var var11:Number = NaN;
          param1.pointCount = 0;
-         var _loc4_:Number = param3.m_position.x - param2.m_position.x;
-         var _loc5_:Number = param3.m_position.y - param2.m_position.y;
-         var _loc6_:Number = _loc4_ * _loc4_ + _loc5_ * _loc5_;
-         var _loc7_:Number = param2.m_radius + param3.m_radius;
-         if(_loc6_ > _loc7_ * _loc7_)
+         var var4:Number = param3.m_position.x - param2.m_position.x;
+         var var5:Number = param3.m_position.y - param2.m_position.y;
+         var var6:Number = var4 * var4 + var5 * var5;
+         var var7:Number = param2.m_radius + param3.m_radius;
+         if(var6 > var7 * var7)
          {
             return;
          }
-         if(_loc6_ < Number.MIN_VALUE)
+         if(var6 < Number.MIN_VALUE)
          {
-            _loc8_ = -_loc7_;
+            var8 = -var7;
             param1.normal.Set(0,1);
          }
          else
          {
-            _loc10_ = Math.sqrt(_loc6_);
-            _loc8_ = _loc10_ - _loc7_;
-            _loc11_ = 1 / _loc10_;
-            param1.normal.x = _loc11_ * _loc4_;
-            param1.normal.y = _loc11_ * _loc5_;
+            var10 = Math.sqrt(var6);
+            var8 = var10 - var7;
+            var11 = 1 / var10;
+            param1.normal.x = var11 * var4;
+            param1.normal.y = var11 * var5;
          }
          param1.pointCount = 1;
-         var _loc9_:b2ContactPoint = param1.points[0];
-         _loc9_.id.key = 0;
-         _loc9_.separation = _loc8_;
-         _loc9_.position.x = param3.m_position.x - param3.m_radius * param1.normal.x;
-         _loc9_.position.y = param3.m_position.y - param3.m_radius * param1.normal.y;
+         var var9:b2ContactPoint = param1.points[0];
+         var9.id.key = 0;
+         var9.separation = var8;
+         var9.position.x = param3.m_position.x - param3.m_radius * param1.normal.x;
+         var9.position.y = param3.m_position.y - param3.m_radius * param1.normal.y;
       }
    }
 }

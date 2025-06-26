@@ -6,33 +6,42 @@ package Tools
       {
          super();
       }
-      
-      public static function randInt(param1:int, param2:int) : int
+
+      /**
+       * Returns a random integer between min (inclusive) and max (inclusive).
+       */
+      public static function randInt(min:int, max:int):int
       {
-         var _loc3_:Number = Math.random() - 0.001;
-         return param1 + int(_loc3_ * (param2 - param1 + 1));
+         // Slight bias adjustment to avoid hitting upper bound
+         var randBase:Number = Math.random() - 0.001;
+         return min + int(randBase * (max - min + 1));
       }
-      
-      public static function randArrayElements(param1:Array, param2:int) : Array
+
+      /**
+       * Returns a new array containing 'count' unique random elements from the input array.
+       */
+      public static function randArrayElements(source:Array, count:int):Array
       {
-         var i:int = 0;
-         var seen:Array = new Array();
-         var result:Array = new Array();
-         if(param1.length < param2)
+         var seen:Array = [];
+         var result:Array = [];
+
+         if (source.length < count)
          {
-            return param1;
+            return source;
          }
-         while(result.length < param2)
+
+         while (result.length < count)
          {
-            i = randInt(0,param1.length - 1);
-            if(seen[i] != 1)
+            var index:int = randInt(0, source.length - 1);
+
+            if (seen[index] != 1)
             {
-               result.push(param1[i]);
-               seen[i] = 1;
+               result.push(source[index]);
+               seen[index] = 1;
             }
          }
+
          return result;
       }
    }
 }
-

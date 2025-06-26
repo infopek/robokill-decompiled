@@ -4,134 +4,125 @@ package Tools
    import flash.events.FocusEvent;
    import flash.events.KeyboardEvent;
    import flash.events.MouseEvent;
-   
+
    public class Input
    {
       public static var i:Input;
-      
       public static var verboseInput:Boolean = false;
-      
+
       public var last:FocusEvent;
-      
       public var mouseButtonHit:int = 0;
-      
       public var keyStatus:Array = new Array();
-      
       public var mousex:int;
-      
       public var mouseStatus:int = 0;
-      
       public var mousey:int;
-      
       public var keysHit:Array = new Array();
-      
-      public function Input(param1:DisplayObject)
+
+      public function Input(display:DisplayObject)
       {
          super();
-         param1.addEventListener(KeyboardEvent.KEY_DOWN,keyDownHandler);
-         param1.addEventListener(KeyboardEvent.KEY_UP,keyUpHandler);
-         param1.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
-         param1.addEventListener(MouseEvent.MOUSE_UP,mouseUpHandler);
-         param1.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
-         param1.addEventListener(FocusEvent.FOCUS_OUT,focusOutHandler);
-         param1.addEventListener(FocusEvent.KEY_FOCUS_CHANGE,focusOutHandler);
-         param1.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE,focusOutHandler);
+         display.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+         display.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+         display.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+         display.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
+         display.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
+         display.addEventListener(FocusEvent.FOCUS_OUT, focusOutHandler);
+         display.addEventListener(FocusEvent.KEY_FOCUS_CHANGE, focusOutHandler);
+         display.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, focusOutHandler);
          i = this;
       }
-      
-      public function mouseUpHandler(param1:MouseEvent) : void
+
+      public function mouseUpHandler(event:MouseEvent):void
       {
          mouseStatus = 0;
       }
-      
-      public function keyUpHandler(param1:KeyboardEvent) : void
+
+      public function keyUpHandler(event:KeyboardEvent):void
       {
-         keyStatus[param1.keyCode] = false;
+         keyStatus[event.keyCode] = false;
       }
-      
-      public function mouseX() : int
+
+      public function mouseX():int
       {
          return mousex;
       }
-      
-      public function mouseMoveHandler(param1:MouseEvent) : void
+
+      public function mouseMoveHandler(event:MouseEvent):void
       {
-         mousex = param1.stageX;
-         mousey = param1.stageY;
+         mousex = event.stageX;
+         mousey = event.stageY;
       }
-      
-      public function focusOutHandler(param1:FocusEvent) : void
+
+      public function focusOutHandler(event:FocusEvent):void
       {
-         var _loc2_:int = 0;
-         if(last)
+         if (last)
          {
-            if(param1.type == FocusEvent.FOCUS_OUT)
+            if (event.type == FocusEvent.FOCUS_OUT)
             {
-               if(last.type != FocusEvent.MOUSE_FOCUS_CHANGE)
+               if (last.type != FocusEvent.MOUSE_FOCUS_CHANGE)
                {
-                  _loc2_ = 0;
-                  while(_loc2_ < keyStatus.length)
+                  for (var i:int = 0; i < keyStatus.length; i++)
                   {
-                     keyStatus[_loc2_] = false;
-                     _loc2_++;
+                     keyStatus[i] = false;
                   }
                   mouseStatus = 0;
                }
             }
          }
-         last = param1;
+         last = event;
       }
-      
-      public function keyDown(param1:int) : int
+
+      public function keyDown(keyCode:int):int
       {
-         return keyStatus[param1];
+         return keyStatus[keyCode];
       }
-      
-      public function mouseDownHandler(param1:MouseEvent) : void
+
+      public function mouseDownHandler(event:MouseEvent):void
       {
          mouseStatus = 1;
          mouseButtonHit = 1;
       }
-      
-      public function mouseDown() : int
+
+      public function mouseDown():int
       {
          return mouseStatus;
       }
-      
-      public function keyDownHandler(param1:KeyboardEvent) : void
+
+      public function keyDownHandler(event:KeyboardEvent):void
       {
-         if(keyStatus[param1.keyCode] != true)
+         if (keyStatus[event.keyCode] !== true)
          {
-            keysHit[param1.keyCode] = true;
+            keysHit[event.keyCode] = true;
          }
-         keyStatus[param1.keyCode] = true;
-         if(verboseInput)
+
+         keyStatus[event.keyCode] = true;
+
+         if (verboseInput)
          {
-            trace(param1.keyCode);
+            trace(event.keyCode);
          }
       }
-      
-      public function keyHit(param1:int, param2:Boolean = true) : int
+
+      public function keyHit(keyCode:int, clear:Boolean = true):int
       {
-         var _loc3_:int = int(keysHit[param1]);
-         if(param2)
+         var wasHit:int = int(keysHit[keyCode]);
+         if (clear)
          {
-            keysHit[param1] = false;
+            keysHit[keyCode] = false;
          }
-         return _loc3_;
+         return wasHit;
       }
-      
-      public function mouseHit() : int
+
+      public function mouseHit():int
       {
-         var _loc1_:int = mouseButtonHit;
+         var hit:int = mouseButtonHit;
          mouseButtonHit = 0;
-         return _loc1_;
+         return hit;
       }
-      
-      public function mouseY() : int
+
+      public function mouseY():int
       {
          return mousey;
       }
    }
 }
-

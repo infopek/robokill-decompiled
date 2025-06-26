@@ -27,8 +27,8 @@ package Engine.Collision.Shapes
          m_position.MulM(m_R);
          m_position.Add(m_body.m_position);
          var _loc5_:b2AABB = new b2AABB();
-         _loc5_.minVertex.Set(m_position.x - m_radius,m_position.y - m_radius);
-         _loc5_.maxVertex.Set(m_position.x + m_radius,m_position.y + m_radius);
+         _loc5_.lowerCorner.Set(m_position.x - m_radius,m_position.y - m_radius);
+         _loc5_.upperCorner.Set(m_position.x + m_radius,m_position.y + m_radius);
          var _loc6_:b2BroadPhase = m_body.m_world.m_broadPhase;
          if(_loc6_.InRange(_loc5_))
          {
@@ -55,8 +55,8 @@ package Engine.Collision.Shapes
             return;
          }
          var _loc3_:b2AABB = new b2AABB();
-         _loc3_.minVertex.Set(m_position.x - m_radius,m_position.y - m_radius);
-         _loc3_.maxVertex.Set(m_position.x + m_radius,m_position.y + m_radius);
+         _loc3_.lowerCorner.Set(m_position.x - m_radius,m_position.y - m_radius);
+         _loc3_.upperCorner.Set(m_position.x + m_radius,m_position.y + m_radius);
          var _loc4_:b2BroadPhase = m_body.m_world.m_broadPhase;
          if(_loc4_.InRange(_loc3_))
          {
@@ -83,8 +83,8 @@ package Engine.Collision.Shapes
          param1.DestroyProxy(m_proxyId);
          _loc2_ = null;
          var _loc6_:b2AABB = new b2AABB();
-         _loc6_.minVertex.Set(m_position.x - m_radius,m_position.y - m_radius);
-         _loc6_.maxVertex.Set(m_position.x + m_radius,m_position.y + m_radius);
+         _loc6_.lowerCorner.Set(m_position.x - m_radius,m_position.y - m_radius);
+         _loc6_.upperCorner.Set(m_position.x + m_radius,m_position.y + m_radius);
          if(param1.InRange(_loc6_))
          {
             m_proxyId = param1.CreateProxy(_loc6_,_loc3_,_loc4_,_loc5_,this);

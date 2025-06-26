@@ -116,10 +116,10 @@ package Engine.Collision.Shapes
          _loc5_ = b2Math.b2MulMV(_loc14_,m_localOBB.extents);
          var _loc15_:b2Vec2 = b2Math.b2MulMV(m_R,m_localOBB.center);
          _loc15_.Add(m_position);
-         _loc7_.minVertex.SetV(_loc15_);
-         _loc7_.minVertex.Subtract(_loc5_);
-         _loc7_.maxVertex.SetV(_loc15_);
-         _loc7_.maxVertex.Add(_loc5_);
+         _loc7_.lowerCorner.SetV(_loc15_);
+         _loc7_.lowerCorner.Subtract(_loc5_);
+         _loc7_.upperCorner.SetV(_loc15_);
+         _loc7_.upperCorner.Add(_loc5_);
          var _loc16_:b2BroadPhase = m_body.m_world.m_broadPhase;
          if(_loc16_.InRange(_loc7_))
          {
@@ -170,10 +170,10 @@ package Engine.Collision.Shapes
          var _loc6_:b2Vec2 = b2Math.b2MulMV(m_R,m_localOBB.center);
          _loc6_.Add(m_position);
          var _loc7_:b2AABB = new b2AABB();
-         _loc7_.minVertex.SetV(_loc6_);
-         _loc7_.minVertex.Subtract(_loc5_);
-         _loc7_.maxVertex.SetV(_loc6_);
-         _loc7_.maxVertex.Add(_loc5_);
+         _loc7_.lowerCorner.SetV(_loc6_);
+         _loc7_.lowerCorner.Subtract(_loc5_);
+         _loc7_.upperCorner.SetV(_loc6_);
+         _loc7_.upperCorner.Add(_loc5_);
          var _loc8_:b2BroadPhase = m_body.m_world.m_broadPhase;
          if(_loc8_.InRange(_loc7_))
          {
@@ -229,10 +229,10 @@ package Engine.Collision.Shapes
          var _loc9_:b2Vec2 = b2Math.b2MulMV(m_R,m_localOBB.center);
          _loc9_.Add(m_position);
          var _loc10_:b2AABB = new b2AABB();
-         _loc10_.minVertex.SetV(_loc9_);
-         _loc10_.minVertex.Subtract(_loc8_);
-         _loc10_.maxVertex.SetV(_loc9_);
-         _loc10_.maxVertex.Add(_loc8_);
+         _loc10_.lowerCorner.SetV(_loc9_);
+         _loc10_.lowerCorner.Subtract(_loc8_);
+         _loc10_.upperCorner.SetV(_loc9_);
+         _loc10_.upperCorner.Add(_loc8_);
          if(param1.InRange(_loc10_))
          {
             m_proxyId = param1.CreateProxy(_loc10_,_loc3_,_loc4_,_loc5_,this);

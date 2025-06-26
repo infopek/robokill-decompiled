@@ -1,195 +1,173 @@
 package Tools
 {
    import flash.geom.Point;
-   
+
    public class Interpolation
    {
       public function Interpolation()
       {
          super();
       }
-      
-      public static function squareSquareInterpolateLock(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function squareSquareInterpolateLock(from:Number, to:Number, t:Number):Number
       {
-         return squareSquareInterpolate(param1,param2,lockValue(param3,0,1));
+         return squareSquareInterpolate(from, to, lockValue(t, 0, 1));
       }
-      
-      public static function distanceToAngle(param1:Number, param2:Number) : Number
+
+      public static function distanceToAngle(a:Number, b:Number):Number
       {
-         var _loc3_:Number = param2 - param1;
-         while(abs(param2 - param1) > 181)
+         while (abs(b - a) > 181)
          {
-            param2 -= sgn(param2 - param1) * 360;
+            b -= sgn(b - a) * 360;
          }
-         return abs(param2 - param1);
+         return abs(b - a);
       }
-      
-      public static function squareInterpolate(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function squareInterpolate(from:Number, to:Number, t:Number):Number
       {
-         return param1 + (param2 - param1) * Math.pow(param3,2);
+         return from + (to - from) * Math.pow(t, 2);
       }
-      
-      public static function fromTo(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function fromTo(value:Number, from:Number, to:Number):Number
       {
-         return (param1 - param2) / (param3 - param2);
+         return (value - from) / (to - from);
       }
-      
-      public static function lockValue(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function lockValue(value:Number, min:Number, max:Number):Number
       {
-         if(param1 < param2)
+         if (value < min) return min;
+         if (value > max) return max;
+         return value;
+      }
+
+      public static function squareSquareInterpolate(from:Number, to:Number, t:Number):Number
+      {
+         t *= 2;
+         if (t < 1)
          {
-            return param2;
+            return from + (to - from) * Math.pow(t, 2) / 2;
          }
-         if(param1 > param3)
+         return from + (to - from) * (-Math.pow(t - 2, 2) + 2) / 2;
+      }
+
+      public static function sqrtInterpolate(from:Number, to:Number, t:Number):Number
+      {
+         return from + (to - from) * Math.sqrt(t);
+      }
+
+      public static function lockValueInt(value:int, min:int, max:int):int
+      {
+         if (value < min) return min;
+         if (value > max) return max;
+         return value;
+      }
+
+      public static function dampenInterpolateLock(from:Number, to:Number, t:Number):Number
+      {
+         return dampenInterpolate(from, to, lockValue(t, 0, 1));
+      }
+
+      public static function sqrtInterpolateLock(from:Number, to:Number, t:Number):Number
+      {
+         return sqrtInterpolate(from, to, lockValue(t, 0, 1));
+      }
+
+      public static function flipAngleLeft(angle:Number):Number
+      {
+         return angle - 360;
+      }
+
+      public static function linearInterpolateLock(from:Number, to:Number, t:Number):Number
+      {
+         return linearInterpolate(from, to, lockValue(t, 0, 1));
+      }
+
+      public static function squareInterpolateLock(from:Number, to:Number, t:Number):Number
+      {
+         return squareInterpolate(from, to, lockValue(t, 0, 1));
+      }
+
+      public static function fromToLock(value:Number, from:Number, to:Number):Number
+      {
+         return lockValue(fromTo(value, from, to), 0, 1);
+      }
+
+      public static function abs(value:Number):Number
+      {
+         return Math.abs(value);
+      }
+
+      public static function tendTowards(current:Number, target:Number, step:Number):Number
+      {
+         if (Math.abs(target - current) < Math.abs(step))
          {
-            return param3;
+            return target;
          }
-         return param1;
+         return target > current ? current + step : current - step;
       }
-      
-      public static function squareSquareInterpolate(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function flipAngleRight(angle:Number):Number
       {
-         param3 *= 2;
-         if(param3 < 1)
+         return angle + 360;
+      }
+
+      public static function tendTowardsVector(x1:Number, y1:Number, x2:Number, y2:Number, maxDist:Number):Point
+      {
+         var dx:Number = x2 - x1;
+         var dy:Number = y2 - y1;
+
+         if (dx == 0 && dy == 0)
          {
-            return param1 + (param2 - param1) * Math.pow(param3,2) / 2;
+            return new Point(x2, y2);
          }
-         return param1 + (param2 - param1) * (-Math.pow(param3 - 2,2) + 2) / 2;
-      }
-      
-      public static function sqrtInterpolate(param1:Number, param2:Number, param3:Number) : Number
-      {
-         return param1 + (param2 - param1) * Math.sqrt(param3);
-      }
-      
-      public static function lockValueInt(param1:int, param2:int, param3:int) : int
-      {
-         if(param1 < param2)
+
+         if (dx * dx + dy * dy <= maxDist * maxDist)
          {
-            return param2;
+            return new Point(x2, y2);
          }
-         if(param1 > param3)
+
+         var angle:Number = Math.atan2(dy, dx);
+         var newX:Number = x1 + Math.cos(angle) * maxDist;
+         var newY:Number = y1 + Math.sin(angle) * maxDist;
+
+         return new Point(newX, newY);
+      }
+
+      public static function directionToAngle(from:Number, to:Number):Number
+      {
+         while (abs(to - from) > 181)
          {
-            return param3;
+            to -= sgn(to - from) * 360;
          }
-         return param1;
+         return sgn(to - from);
       }
-      
-      public static function dampenInterpolateLock(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function sgn(value:Number):Number
       {
-         return dampenInterpolate(param1,param2,lockValue(param3,0,1));
-      }
-      
-      public static function sqrtInterpolateLock(param1:Number, param2:Number, param3:Number) : Number
-      {
-         return sqrtInterpolate(param1,param2,lockValue(param3,0,1));
-      }
-      
-      public static function flipAngleLeft(param1:Number) : Number
-      {
-         return param1 - 360;
-      }
-      
-      public static function linearInterpolateLock(param1:Number, param2:Number, param3:Number) : Number
-      {
-         return linearInterpolate(param1,param2,lockValue(param3,0,1));
-      }
-      
-      public static function squareInterpolateLock(param1:Number, param2:Number, param3:Number) : Number
-      {
-         return squareInterpolate(param1,param2,lockValue(param3,0,1));
-      }
-      
-      public static function fromToLock(param1:Number, param2:Number, param3:Number) : Number
-      {
-         return lockValue(fromTo(param1,param2,param3),0,1);
-      }
-      
-      public static function abs(param1:Number) : Number
-      {
-         return Math.abs(param1);
-      }
-      
-      public static function tendTowards(param1:Number, param2:Number, param3:Number) : Number
-      {
-         if(Math.abs(param2 - param1) < Math.abs(param3))
-         {
-            return param2;
-         }
-         if(param2 > param1)
-         {
-            return param1 + param3;
-         }
-         return param1 - param3;
-      }
-      
-      public static function flipAngleRight(param1:Number) : Number
-      {
-         return param1 + 360;
-      }
-      
-      public static function tendTowardsVector(param1:Number, param2:Number, param3:Number, param4:Number, param5:Number) : Point
-      {
-         var _loc6_:Number = param3 - param1;
-         var _loc7_:Number = param4 - param2;
-         if(_loc6_ == 0 && _loc7_ == 0)
-         {
-            return new Point(param3,param4);
-         }
-         if(_loc6_ * _loc6_ + _loc7_ * _loc7_ <= param5 * param5)
-         {
-            return new Point(param3,param4);
-         }
-         var _loc8_:Number = Math.atan2(_loc7_,_loc6_);
-         var _loc9_:Number = param1 + Math.cos(_loc8_) * param5;
-         var _loc10_:Number = param2 + Math.sin(_loc8_) * param5;
-         return new Point(_loc9_,_loc10_);
-      }
-      
-      public static function directionToAngle(param1:Number, param2:Number) : Number
-      {
-         var _loc3_:Number = param2 - param1;
-         while(abs(param2 - param1) > 181)
-         {
-            param2 -= sgn(param2 - param1) * 360;
-         }
-         return sgn(param2 - param1);
-      }
-      
-      public static function sgn(param1:Number) : Number
-      {
-         if(param1 < 0)
-         {
-            return -1;
-         }
-         if(param1 == 0)
-         {
-            return 0;
-         }
+         if (value < 0) return -1;
+         if (value == 0) return 0;
          return 1;
       }
-      
-      public static function linearInterpolate(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function linearInterpolate(from:Number, to:Number, t:Number):Number
       {
-         return param1 + (param2 - param1) * param3;
+         return from + (to - from) * t;
       }
-      
-      public static function tendTowardsAngle(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function tendTowardsAngle(current:Number, target:Number, step:Number):Number
       {
-         var _loc4_:Number = param2 - param1;
-         while(abs(param2 - param1) > 181)
+         while (abs(target - current) > 181)
          {
-            param2 -= sgn(param2 - param1) * 360;
+            target -= sgn(target - current) * 360;
          }
-         return tendTowards(param1,param2,param3);
+         return tendTowards(current, target, step);
       }
-      
-      public static function dampenInterpolate(param1:Number, param2:Number, param3:Number) : Number
+
+      public static function dampenInterpolate(from:Number, to:Number, t:Number):Number
       {
-         param3 = Math.sqrt(param3);
-         var _loc4_:Number = 1 - Math.sin(15 * (Math.pow(param3,2.5) - 5) / Math.PI) * Math.pow(1 - param3,2) / 0.95;
-         return param1 + _loc4_ * (param2 - param1);
+         t = Math.sqrt(t);
+         var dampFactor:Number = 1 - Math.sin(15 * (Math.pow(t, 2.5) - 5) / Math.PI) * Math.pow(1 - t, 2) / 0.95;
+         return from + dampFactor * (to - from);
       }
    }
 }
-
